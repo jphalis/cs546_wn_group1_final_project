@@ -36,11 +36,10 @@ const exportedMethods = {
     id = validations.checkId(id, 'ID')
     let userCollection = await usersCollection()
     let user = await userCollection.findOne({ _id: new ObjectId(id) })
-
     if (!user) {
       throw new Error('Error: User not found')
     }
-    return await this.getUserById(user.insertedId.toString())
+    return user
   },
 
   async removeUser (id) {

@@ -1,0 +1,18 @@
+.edit-user-form {
+    max-width: 300px;
+}
+
+.edit-user-form .full-width-input {
+    display: block;
+    min-height: 3em;
+    margin: 10px 0;
+    width: 100%;
+}
+
+label {
+    font-weight: bold;
+}
+
+.error-list li {
+    color: #ff0000;
+}

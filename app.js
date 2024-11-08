@@ -29,7 +29,7 @@ const handlebarsInstance = exphbs.create({
       return new Handlebars.SafeString(JSON.stringify(obj))
     },
 
-    partialsDir: ['views/partials/']  // This hasn't been populated with anything yet
+    partialsDir: ['views/partials/']
   }
 })
 

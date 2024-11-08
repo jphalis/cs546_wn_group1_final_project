@@ -1,0 +1,37 @@
+<section>
+    <article>
+        <h1>Edit your profile</h1>
+        <form class="edit-user-form" id="edit-user-form" method="post">
+            <label>
+                First Name
+                <input type="text" id="firstName" name="firstName" placeholder="{{user.firstName}}"
+                    value="{{user.firstName}}" class="full-width-input">
+            </label>
+            <br>
+            <label>
+                Last Name
+                <input type="text" id="lastName" name="lastName" placeholder="{{user.lastName}}"
+                    value="{{user.lastName}}" class="full-width-input">
+            </label>
+            <br>
+            <label>
+                Email
+                <input type="text" id="email" name="email" placeholder="{{user.email}}" value="{{user.email}}"
+                    class="full-width-input">
+            </label>
+            <br>
+            <button type="submit">Save Changes</button>
+        </form>
+
+        {{#if hasErrors}}
+        <ul class="error-list">
+            {{#each errors}}
+            <li>
+                {{this}}
+            </li>
+            {{/each}}
+        </ul>
+        {{/if}}
+
+    </article>
+</section>
