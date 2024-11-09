@@ -1,6 +1,6 @@
-import { users as usersCollection } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
-import validations from '../validations.js'
+import validations from '../../DomainLayer/validations.js'
+import { users as usersCollection } from '../config/mongoCollections.js'
 
 const exportedMethods = {
   async createUser (firstName, lastName, email, password) {

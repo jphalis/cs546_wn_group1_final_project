@@ -1,7 +1,7 @@
 import { Router } from 'express'
-let router = Router()
-import { usersData } from '../data/index.js'
+import { usersData } from '../../DataAccess/data/index.js'
 import validations from '../validations.js'
+let router = Router()
 
 router
   .route('/')

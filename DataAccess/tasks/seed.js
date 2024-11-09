@@ -1,7 +1,7 @@
 // tasks/seed.js
-import { dbConnection, closeConnection } from '../config/mongoConnection.js'
-import users from '../data/users.js'
 import { faker } from '@faker-js/faker'
+import users from '../../DomainLayer/data/users.js'
+import { closeConnection, dbConnection } from '../config/mongoConnection.js'
 
 const db = await dbConnection()
 await db.dropDatabase()
