@@ -2,11 +2,31 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
 import users from '../data/users.js'
 import { faker } from '@faker-js/faker'
+import questionsData from '../seed_data/Questions.json' assert { type: 'json' }
+import companiesData from '../seed_data/Companies.json' assert { type: 'json' }
 
 const db = await dbConnection()
 await db.dropDatabase()
 
-console.log('Starting to seed database')
+console.log('Starting to seed database.')
+
+// Import Questions.json into questions collection
+const questionsCollection = await db.collection('questions');
+try {
+  const questionsInsertResult = await questionsCollection.insertMany(questionsData);
+  console.log(`Inserted ${questionsInsertResult.insertedCount} questions.`);
+} catch (e) {
+  console.error(`Error inserting questions: ${e}`);
+}
+
+// Import Companies.json into companies collection
+const companiesCollection = await db.collection('companies');
+try {
+  const companiesInsertResult = await companiesCollection.insertMany(companiesData);
+  console.log(`Inserted ${companiesInsertResult.insertedCount} companies.`);
+} catch (e) {
+  console.error(`Error inserting companies: ${e}`);
+}
 
 // Seed 10 initial users
 for (let i = 0; i < 10; i++) {
@@ -25,6 +45,6 @@ for (let i = 0; i < 10; i++) {
   }
 }
 
-console.log('Done seeding database')
+console.log('Done seeding database.')
 
 await closeConnection()
