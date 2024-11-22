@@ -1,20 +1,32 @@
+import bcrypt from 'bcrypt'
+const saltRounds = 16
 import { users as usersCollection } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
 import validations from '../validations.js'
 
 const exportedMethods = {
-  async createUser (firstName, lastName, email, password) {
+  async createUser (
+    firstName,
+    lastName,
+    email,
+    passwordPlainText,
+    phoneNumber,
+    bio
+  ) {
     firstName = validations.checkString(firstName, 'First name')
     lastName = validations.checkString(lastName, 'Last name')
     email = validations.checkEmail(email, 'Email')
-    password = validations.checkPassword(password, 'Password')
+    passwordPlainText = validations.checkPassword(passwordPlainText, 'Password')
+    let password = await bcrypt.hash(passwordPlainText, saltRounds)
 
     let userCollection = await usersCollection()
     let newUser = {
       firstName,
       lastName,
       email,
-      password
+      password,
+      phoneNumber,
+      bio
     }
     let insertResult = await userCollection.insertOne(newUser)
     if (!insertResult.insertedId) {
@@ -55,12 +67,21 @@ const exportedMethods = {
     return { ...deletedUser, deleted: true }
   },
 
-  async updateUserPut (id, firstName, lastName, email, password) {
+  async updateUserPut (
+    id,
+    firstName,
+    lastName,
+    email,
+    passwordPlainText,
+    phoneNumber,
+    bio
+  ) {
     id = validations.checkId(id, 'ID')
     firstName = validations.checkString(firstName, 'First name')
     lastName = validations.checkString(lastName, 'Last name')
     email = validations.checkEmail(email, 'Email')
-    password = validations.checkPassword(password, 'Password')
+    passwordPlainText = validations.checkPassword(passwordPlainText, 'Password')
+    let password = await bcrypt.hash(passwordPlainText, saltRounds)
 
     let userCollection = await usersCollection()
     let existingUser = await getUserById(id.toString())
@@ -73,7 +94,9 @@ const exportedMethods = {
       firstName,
       lastName,
       email,
-      password
+      password,
+      phoneNumber,
+      bio
     }
 
     let updateResult = await userCollection.findOneAndUpdate(
@@ -90,17 +113,31 @@ const exportedMethods = {
 
   async updateUserPatch (id, userInfo) {
     id = validations.checkId(id, 'ID')
-    if (userInfo.firstName)
+    if (userInfo.firstName) {
       userInfo.firstName = validations.checkString(
         userInfo.firstName,
         'First Name'
       )
+    }
 
-    if (userInfo.lastName)
+    if (userInfo.lastName) {
       userInfo.lastName = validations.checkString(
         userInfo.lastName,
         'Last Name'
       )
+    }
+
+    if (userInfo.email) {
+      userInfo.email = validations.checkEmail(userInfo.email, 'Email')
+    }
+
+    if (userInfo.newPassword) {
+      let passwordPlainText = validations.checkPassword(
+        userInfo.newPassword,
+        'Password'
+      )
+      userInfo.password = await bcrypt.hash(passwordPlainText, saltRounds)
+    }
     const userCollection = await usersCollection()
     const updateInfo = await userCollection.findOneAndUpdate(
       { _id: new ObjectId(id) },

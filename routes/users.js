@@ -1,5 +1,6 @@
 import { Router } from 'express'
 let router = Router()
+import bcrypt from 'bcrypt'
 import { usersData } from '../data/index.js'
 import validations from '../validations.js'
 
@@ -44,7 +45,9 @@ router
         userInfo.firstName,
         userInfo.lastName,
         userInfo.email,
-        userInfo.password
+        userInfo.password,
+        userInfo.phoneNumber,
+        userInfo.bio
       )
       return res.json(newUser)
     } catch (e) {
@@ -74,7 +77,10 @@ router
         id: user._id.toString(),
         firstName: user.firstName,
         lastName: user.lastName,
-        email: user.email
+        email: user.email,
+        password: user.password,
+        phoneNumber: user.phoneNumber,
+        bio: user.bio
       })
     } catch (e) {
       return res.status(404).json(e)
@@ -114,7 +120,9 @@ router
         requestBody.firstName,
         requestBody.lastName,
         requestBody.email,
-        requestBody.password
+        requestBody.password,
+        requestBody.phoneNumber,
+        requestBody.bio
       )
       res.status(200).json(updatedUser)
     } catch (e) {
@@ -156,7 +164,7 @@ router
     }
 
     try {
-      const updatedUser = await userData.updateUserPatch(
+      const updatedUser = await usersData.updateUserPatch(
         req.params.id,
         userInfo
       )
@@ -186,21 +194,21 @@ router
   .route('/:userId/edit')
   .get(async (req, res) => {
     try {
-      req.params.id = validations.checkId(req.params.userId, 'User ID')
+      req.params.userId = validations.checkId(req.params.userId, 'User ID')
     } catch (e) {
       return res.status(400).json({ error: e })
     }
     try {
-      const user = await usersData.getUserById(req.params.id)
-      res.render('users/edit', { user: user, partial: 'edit_user_script' })
+      const user = await usersData.getUserById(req.params.userId)
+      res.render('users/edit', { user: user })
     } catch (e) {
       return res.status(404).json(e)
     }
   })
   .post(async (req, res) => {
-    console.log('here')
     let userInfo = req.body
     let errors = []
+
     if (!userInfo || Object.keys(userInfo).length === 0) {
       return res
         .status(400)
@@ -208,7 +216,12 @@ router
     }
 
     try {
-      req.params.id = validations.checkId(req.params.id)
+      userInfo.userId = validations.checkId(userInfo.userId)
+    } catch (e) {
+      errors.push(e)
+    }
+
+    try {
       if (userInfo.firstName) {
         userInfo.firstName = validations.checkString(
           userInfo.firstName,
@@ -238,8 +251,35 @@ router
       errors.push(e)
     }
 
+    const user = await usersData.getUserById(userInfo.userId)
+
+    try {
+      if (userInfo.password) {
+        let isOriginalPasswordMatch = false
+        try {
+          isOriginalPasswordMatch = await bcrypt.compare(
+            userInfo.password,
+            user.password
+          )
+        } catch (e) {
+          errors.push(e)
+        }
+        if (isOriginalPasswordMatch) {
+          if (userInfo.newPassword) {
+            userInfo.newPassword = validations.checkPassword(
+              userInfo.newPassword,
+              'New PasswordPassword'
+            )
+          }
+        } else {
+          errors.push('Your original password did not match our database')
+        }
+      }
+    } catch (e) {
+      errors.push(e)
+    }
+
     if (errors.length > 0) {
-      const user = await usersData.getUserById(req.params.id)
       res.render('users/edit', {
         errors: errors,
         hasErrors: true,
@@ -249,8 +289,8 @@ router
     }
 
     try {
-      const updatedUser = await userData.updateUserPatch(
-        req.params.id,
+      const updatedUser = await usersData.updateUserPatch(
+        userInfo.userId,
         userInfo
       )
       res.redirect(`/users/${updatedUser._id}`)

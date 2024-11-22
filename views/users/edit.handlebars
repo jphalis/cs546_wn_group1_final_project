@@ -2,22 +2,47 @@
     <article>
         <h1>Edit your profile</h1>
         <form class="edit-user-form" id="edit-user-form" method="post">
+            <input type="hidden" id="userId" name="userId" value="{{user._id}}">
             <label>
                 First Name
-                <input type="text" id="firstName" name="firstName" placeholder="{{user.firstName}}"
-                    value="{{user.firstName}}" class="full-width-input">
+                <input type="text" id="firstName" name="firstName" placeholder="First Name" value="{{user.firstName}}"
+                    class="full-width-input">
             </label>
             <br>
             <label>
                 Last Name
-                <input type="text" id="lastName" name="lastName" placeholder="{{user.lastName}}"
-                    value="{{user.lastName}}" class="full-width-input">
+                <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="{{user.lastName}}"
+                    class="full-width-input">
             </label>
             <br>
             <label>
                 Email
-                <input type="text" id="email" name="email" placeholder="{{user.email}}" value="{{user.email}}"
+                <input type="email" id="email" name="email" placeholder="Email" value="{{user.email}}"
                     class="full-width-input">
+            </label>
+            <label>
+                Old Password
+                <input type="password" id="password" name="password" placeholder="Old Password"
+                    value="{{user.password}}" class="full-width-input">
+            </label>
+            <label>
+                New Password
+                <input type="password" id="newPassword" name="newPassword" placeholder="New Password" value=""
+                    class="full-width-input">
+            </label>
+            <label>
+                Confirm New Password
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password"
+                    value="" class="full-width-input">
+            </label>
+            <label>
+                Phone Number
+                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number"
+                    value="{{user.phoneNumber}}" class="full-width-input">
+            </label>
+            <label>
+                Bio
+                <input type="text" id="bio" name="bio" placeholder="Bio" value="{{user.bio}}" class="full-width-input">
             </label>
             <br>
             <button type="submit">Save Changes</button>
