@@ -1,9 +1,9 @@
 import { questions as questionCollection } from '../config/mongoCollections.js'
-import { users as usersCollection } from '../config/mongoCollections.js'
-import * as util from './utilities.js'
+// import {companies as companiesCollection} from '../config/mongoCollections.js'
+import util from './utilities.js'
 const exportedMethods = {
 
-    async createQuestion (
+    async createNewQuestion (
         question,
         answer,
         role,
@@ -15,25 +15,26 @@ const exportedMethods = {
         category
       ) {
         
-        
-        let userQuestion = validations.checkString(question, 'User Question');
-        let userQuestionRole = validations.checkString(role, 'Role Question');
-        let userQuestionDifficulty = validations.checkString(difficulty, 'Difficulty Question');
-        let userQuestionCompany = validations.checkString(company, 'Company Question');
-        let userQuestionLocation = validations.checkString(location, "Location Question")
-        let userQuestionExperience = validations.checkString(experience, 'Experience Question');
-        let userQuestionType = validations.checkString(type, 'Type Question');
-        let userQuestionCategory = validations.checkString(category, 'Category Question');
-        answer = validations.checkString(answer, "Answer");
+        console.log("CREATING QUESTION");
+        let userQuestion           = question;
+        let userQuestionRole       = role;
+        let userQuestionDifficulty = difficulty;
+        let userQuestionCompany    = company;
+        let userQuestionLocation   = location ;
+        let userQuestionExperience = experience;
+        let userQuestionType       = type;
+        let userQuestionCategory   = category;
+        //answer                     = validations.checkString(answer, "Answer");
     
 
         //fill in other fields for db doc
         let createdTime = util.getCurrentDateTime(); 
         let updatedTime = util.getCurrentDateTime();
 
-        userQuestionCompany = getCompanyId(userQuestionCompany);
+        // get companyID from company data file(@Fred1110)
+        //userQuestionCompany = companies.getCompanyId(userQuestionCompany);
 
-        let questionCollection = await questionCollection()
+        const questionCollectionList = await questionCollection();
         let newQuestion = {
             created_ts: createdTime,
             updated_at: updatedTime,
@@ -50,17 +51,50 @@ const exportedMethods = {
             answerSource: "Generated",
             category: userQuestionCategory,
             
-        }
+        };
 
 
-        let insertResult = await questionCollection.insertOne(newQuestion);
-
+        let insertResult = await questionCollectionList.insertOne(newQuestion);
+        console.log(insertResult);
+        console.log("AFTER RES");
+        //display to user
 
         if (!insertResult.insertedId) {
           throw new Error('Error: Could not create the user')
         }
         return { _id: insertResult.insertedId.toString(), ...newQuestion }
-    }
+    },
+    async getAllQuestions () {
+      let questionCollectionList = await questionCollection()
+      let allQuestions = await questionCollectionList.find({}).toArray()
+      if (allQuestions.length === 0) {
+        throw new Error('There are no question found in the database.')
+      }
+      return allQuestions
+    },
+  
+    async getQuestionById (id) {
+      id = validations.checkId(id, 'ID')
+      let questionCollectionList = await questionCollection()
+      let question = await questionCollectionList.findOne({ _id: new ObjectId(id) })
+      if (!question) {
+        throw new Error('Error: User not found')
+      }
+      return user
+    },
+  
+    async removeQuestion (id) {
+      id = validations.checkId(id, 'ID')
+      let questionCollectionList = await questionCollection()
+      let deletedQuestion = await questionCollectionList.findOneAndDelete({
+        _id: new ObjectId(id)
+      })
+  
+      if (!deletedQuestion) {
+        throw new Error('Error: User not found')
+      }
+      return { ...deletedQuestion, deleted: true }
+    },
 
 
 

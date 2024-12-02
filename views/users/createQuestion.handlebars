@@ -1,6 +1,8 @@
+<section>
+    <article>
 <h1>Submit Your Own Question</h1>
-
-<form id="createQuestionForm">
+<!--id="createQuestionForm" -->
+<form action="/createQuestion/submit" method="POST">
     <label for="user_question_input">Enter Question</label>
     <input type="text" id="user_question_input" name="user_question_input" required>
     <br>
@@ -35,5 +37,18 @@
     
     <button type="submit">Submit</button>
 </form>
+<!--
+{{#if hasErrors}}
+        <ul class="error-list">
+            {{#each errors}}
+            <li>
+                {{this}}
+            </li>
+            {{/each}}
+        </ul>
+        {{/if}}
 
-<script src="../../public/js/submit_question.js" type="module"></script>
+<script src="../../public/js/submit_question_val_check.js" type="module"></script> 
+-->
+</article>
+</section>
