@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{company.name}} - Company Details</title>
+  <link rel="stylesheet" href="/css/styles.css"> <!-- Add your stylesheet here -->
+</head>
+<body>
+  <header>
+    <h1>{{company.name}}</h1>
+    <p><strong>Domain:</strong> {{company.domain}}</p>
+  </header>
+
+  <main>
+    <section>
+      <h2>Company Information</h2>
+      <ul>
+        {{!-- <li><strong>ID:</strong> {{company._id}}</li> --}}
+        {{!-- <li><strong>Created On:</strong> {{company.created_ts}}</li> --}}
+        <li><strong>Last Updated:</strong> {{company.updated_ts}}</li>
+        <li><strong>Company Website:</strong><a href="http://{{company.domain}}"> {{company.domain}}</a></li>
+        <li><strong>Description:</strong> {{company.description}}</li>
+        <li><strong>Size:</strong> {{company.size}}</li>
+        <li><strong>Location:</strong> {{company.location}}</li>
+        <li><strong>Interview Questions:</strong> {{company.questions}}</li>
+      </ul>
+    </section>
+  </main>
+
+</body>
+</html>

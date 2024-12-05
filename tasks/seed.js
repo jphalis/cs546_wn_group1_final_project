@@ -1,7 +1,9 @@
 // tasks/seed.js
-import { dbConnection, closeConnection } from '../config/mongoConnection.js'
-import users from '../data/users.js'
-import { faker } from '@faker-js/faker'
+import { dbConnection, closeConnection } from '../config/mongoConnection.js';
+import users from '../data/users.js';
+import companiesData from '../data/companies.js';
+import { faker } from '@faker-js/faker';
+import companies from '../seed_data/Companies.json' with { type: 'json' };
 
 const db = await dbConnection()
 await db.dropDatabase()
@@ -25,6 +27,31 @@ for (let i = 0; i < 10; i++) {
   }
 }
 
-console.log('Done seeding database')
+//Seed companies from Companies.json
 
-await closeConnection()
+
+try {
+  for (const company of companies) {
+    try {
+      const newCompany = await companiesData.createCompanies(
+        company._id,
+        company.name,
+        company.domain,
+        company.created_ts,
+        company.updated_ts,
+        company.description,
+        company.size,
+        company.location
+      );
+      console.log(`Created company: ${company.name}`);
+    } catch (e) {
+      console.log(`Error creating company: ${company.name}: ${e}`);
+    }
+  }
+} catch(e) {
+  console.log(`Error reading companies from file: `)
+}
+
+console.log('Done seeding database');
+
+await closeConnection();
