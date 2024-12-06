@@ -2,8 +2,8 @@
 import { dbConnection, closeConnection } from '../config/mongoConnection.js'
 import users from '../data/users.js'
 import { faker } from '@faker-js/faker'
-import questionsData from '../seed_data/Questions.json' assert { type: 'json' }
-import companiesData from '../seed_data/Companies.json' assert { type: 'json' }
+import questionsData from '../seed_data/Questions.json' with { type: 'json' }
+import companiesData from '../seed_data/Companies.json' with { type: 'json' }
 
 const db = await dbConnection()
 await db.dropDatabase()

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Results for "{{searchByTitle}}"</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header>
+    <h1>Search Results for "{{searchByTitle}}"</h1>
+  </header>
+
+  <main>
+    {{#if companies.length}}
+      <ul id="search-results">
+        {{#each companies}}
+          <li class="company-item">
+            <h2>
+              <a href="/companies/{{this._id}}">{{this.name}}</a>
+            </h2>
+            <p><strong>Domain:</strong> {{this.domain}}</p>
+            <p><strong>Description:</strong> {{this.description}}</p>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>No companies found matching your search criteria.</p>
+    {{/if}}
+  </main>
+</body>
+</html>
