@@ -28,7 +28,7 @@ const exportedMethods = {
     if (!emailRegex.test(strVal)) {
       throw new Error('Error: Invalid email format')
     }
-    return strVal
+    return strVal.toLowerCase()
   },
 
   checkPassword (strVal, varName) {

@@ -1,9 +1,21 @@
 <section>
-    <h1>Users</h1>
-    {{#each users}}
-    <article class="post">
-        <h2><a href="/users/{{_id}}">{{email}}</a></h2>
-        <p>{{body}}</p>
-    </article>
-    {{/each}}
+    <h1>User List</h1>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Email</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each users}}
+            <tr>
+                <td><a href="/users/{{_id}}" class="user-email">{{email}}</a></td>
+                <td>{{firstName}}</td>
+                <td>{{lastName}}</td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
 </section>
