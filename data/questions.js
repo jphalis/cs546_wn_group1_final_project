@@ -32,7 +32,6 @@ const exportedMethods = {
 
     // get companyID from company data file(@Fred1110)
     //userQuestionCompany = companies.getCompanyId(userQuestionCompany);
-
     const questionCollectionList = await questionCollection()
     let newQuestion = {
       created_ts: createdTime,
