@@ -1,6 +1,8 @@
 import { questions as questionCollection } from '../config/mongoCollections.js'
 // import {companies as companiesCollection} from '../config/mongoCollections.js'
 import util from './utilities.js'
+import validations from '../validations.js'
+
 const exportedMethods = {
 
     async createNewQuestion (
@@ -24,8 +26,8 @@ const exportedMethods = {
         let userQuestionExperience = experience;
         let userQuestionType       = type;
         let userQuestionCategory   = category;
+        let userAnswer = await validations.generateAnswer(question, company);
         //answer                     = validations.checkString(answer, "Answer");
-    
 
         //fill in other fields for db doc
         let createdTime = util.getCurrentDateTime(); 
@@ -47,7 +49,7 @@ const exportedMethods = {
             experience: userQuestionExperience,
             questionSource: "User",
             type: userQuestionType,
-            answer: answer,
+            answer: userAnswer,
             answerSource: "Generated",
             category: userQuestionCategory,
             

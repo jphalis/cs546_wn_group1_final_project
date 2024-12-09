@@ -1,4 +1,5 @@
 import { ObjectId } from 'mongodb'
+import OpenAI from "openai";
 
 const exportedMethods = {
   checkString (strVal, varName) {
@@ -69,6 +70,34 @@ const exportedMethods = {
       arr[i] = arr[i].trim()
     }
     return arr
+  },
+
+  // function for generating an AI-written solution to the question provided by the user
+  async generateAnswer(question, company) {
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // !!! Please do not share the API key outside of this project !!!
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+    const openai = new OpenAI({
+      apiKey: "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", // Replace with your actual OpenAI API key
+    });
+
+    try {
+      const prompt = `In one paragraph or less, explain how I can best answer this interview question for ${company} in a straightforward and concise manner, avoiding unnecessary filler words like 'Certainly', 'Sure', and 'Of course': ${question}`;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+          { role: "user", content: prompt },
+        ],
+      });
+
+      return completion.choices[0].message.content.trim();
+    } catch (e) {
+      console.error("Error fetching AI response:", e);
+      throw e;
+    }
   }
 }
 
