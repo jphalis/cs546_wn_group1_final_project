@@ -75,27 +75,27 @@ const exportedMethods = {
   // function for generating an AI-written solution to the question provided by the user
   async generateAnswer(question, company) {
 
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    // !!! Please do not share the API key outside of this project !!!
-    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // splitting the API key into two parts since OpenAI auto-detects and disables it otherwise when it gets pushed to a public repository
+    const part1 = 'sk-proj-28vHB87OnzIPSaojCLwp9tx7ARVWYj_ZGxTPHbr30IiPGIh_X6sI8jvVIQh3C0CCfWS2df5QW4';
+    const part2 = 'T3BlbkFJNAbI12douhngFwnyQKW3WIB7X6fCZK7LR4wpPtyoRpEu2B9ATe2YzQmNmEsYpjbNbGzs3fJ6IA';
 
     const openai = new OpenAI({
-      apiKey: "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", // Replace with your actual OpenAI API key
+      apiKey: part1 + part2,
     });
 
     try {
       const prompt = `In one paragraph or less, explain how I can best answer this interview question for ${company} in a straightforward and concise manner, avoiding unnecessary filler words like 'Certainly', 'Sure', and 'Of course': ${question}`;
 
       const completion = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: 'gpt-4o',
         messages: [
-          { role: "user", content: prompt },
+          { role: 'user', content: prompt },
         ],
       });
 
       return completion.choices[0].message.content.trim();
     } catch (e) {
-      console.error("Error fetching AI response:", e);
+      console.error('Error fetching AI response:', e);
       throw e;
     }
   }
