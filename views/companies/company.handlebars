@@ -1,62 +1,46 @@
-<!DOCTYPE html>
-<html lang="en">
+<h1>{{company.name}}</h1>
+<p><strong>Domain:</strong> {{company.domain}}</p>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{company.name}} - Company Details</title>
-  <link rel="stylesheet" href="/css/styles.css">
-</head>
 
-<body>
-  <header>
-    <h1>{{company.name}}</h1>
-    <p><strong>Domain:</strong> {{company.domain}}</p>
-  </header>
-
-  <main>
-    <section>
-      <h2>Company Information</h2>
-      <ul>
-        {{!-- <li><strong>ID:</strong> {{company._id}}</li> --}}
-        {{!-- <li><strong>Created On:</strong> {{company.created_ts}}</li> --}}
-        <li><strong>Last Updated:</strong> {{company.updated_ts}}</li>
-        <li><strong>Company Website:</strong><a href="http://{{company.domain}}"> {{company.domain}}</a></li>
-        <li><strong>Description:</strong> {{company.description}}</li>
-        <li><strong>Size:</strong> {{company.size}}</li>
-        <li><strong>Location:</strong> {{company.location}}</li>
-        <li><strong>Interview Questions:</strong>
-          <table class="table table-striped">
-            <thead>
-              <tr>
-                <th>Question ID</th>
-                <th>Role</th>
-                <th>Difficulty</th>
-                <th>Location</th>
-                <th>Experience</th>
-                <th>Question</th>
-                <th>Answer</th>
-              </tr>
-            </thead>
-            <tbody>
-              {{#each companyQuestions}}
-              <tr>
-                <td>{{_id}}</td>
-                <td>{{role}}</td>
-                <td>{{difficulty}}</td>
-                <td>{{location}}</td>
-                <td>{{experience}}</td>
-                <td>{{question}}</td>
-                <td>{{answer}}</td>
-              </tr>
-              {{/each}}
-            </tbody>
-          </table>
-        </li>
-      </ul>
-    </section>
-  </main>
-
-</body>
-
-</html>
+<main>
+  <section>
+    <h2>Company Information</h2>
+    <ul>
+      {{!-- <li><strong>ID:</strong> {{company._id}}</li> --}}
+      {{!-- <li><strong>Created On:</strong> {{company.created_ts}}</li> --}}
+      <li><strong>Last Updated:</strong> {{company.updated_ts}}</li>
+      <li><strong>Company Website:</strong><a href="http://{{company.domain}}"> {{company.domain}}</a></li>
+      <li><strong>Description:</strong> {{company.description}}</li>
+      <li><strong>Size:</strong> {{company.size}}</li>
+      <li><strong>Location:</strong> {{company.location}}</li>
+      <li><strong>Interview Questions:</strong>
+        <table class="table table-striped" id="companyQuestionsTable">
+          <thead>
+            <tr>
+              <th>Question ID</th>
+              <th>Role</th>
+              <th>Difficulty</th>
+              <th>Location</th>
+              <th>Experience</th>
+              <th>Question</th>
+              <th>Answer</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each companyQuestions}}
+            <tr>
+              <td>{{_id}}</td>
+              <td>{{role}}</td>
+              <td>{{difficulty}}</td>
+              <td>{{location}}</td>
+              <td>{{experience}}</td>
+              <td>{{question}}</td>
+              <td>{{answer}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </li>
+    </ul>
+  </section>
+</main>
