@@ -7,23 +7,23 @@ function renderStars(overallDifficulty) {
 
   // Add full stars
   for (let i = 0; i < fullStars; i++) {
-    starsHtml += '<span class="star full">&#9733;</span>'; // Filled star (★)
+    starsHtml += '<span class="star full">&#9733;</span>'; 
   }
 
   // Add half star if applicable
   if (halfStar) {
-    starsHtml += '<span class="star half">&#9733;</span>'; // Half star
+    starsHtml += '<span class="star half">&#9733;</span>';
   }
 
   // Add empty stars
   for (let i = 0; i < emptyStars; i++) {
-    starsHtml += '<span class="star empty">&#9734;</span>'; // Empty star (☆)
+    starsHtml += '<span class="star empty">&#9734;</span>';
   }
 
   return starsHtml;
 }
 
-// Attach this function dynamically when the page loads
+
 document.addEventListener("DOMContentLoaded", () => {
   const starContainers = document.querySelectorAll(".star-rating");
   starContainers.forEach(container => {
