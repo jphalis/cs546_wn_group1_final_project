@@ -11,15 +11,18 @@
 <body>
   <header>
     <h1>{{company.name}}</h1>
-    <p><strong>Domain:</strong> {{company.domain}}</p>
+    <div class="difficulty-rating">
+    <strong>Overall Rating:</strong>
+    <div class="star-rating" data-difficulty="{{company.overallDifficulty}}">
+        <!-- The stars will be dynamically rendered here -->
+    </div>
+    </div>
   </header>
 
   <main>
     <section>
       <h2>Company Information</h2>
       <ul>
-        {{!-- <li><strong>ID:</strong> {{company._id}}</li> --}}
-        {{!-- <li><strong>Created On:</strong> {{company.created_ts}}</li> --}}
         <li><strong>Last Updated:</strong> {{company.updated_ts}}</li>
         <li><strong>Company Website:</strong><a href="http://{{company.domain}}"> {{company.domain}}</a></li>
         <li><strong>Description:</strong> {{company.description}}</li>
@@ -56,7 +59,7 @@
       </ul>
     </section>
   </main>
-
+<script src="../../public/js/overalldifficulty.js"></script>
 </body>
 
 </html>
