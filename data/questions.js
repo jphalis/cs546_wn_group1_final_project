@@ -1,4 +1,4 @@
-import { questions as questionCollection } from '../config/mongoCollections.js'
+import {comments, questions as questionCollection} from '../config/mongoCollections.js'
 // import {companies as companiesCollection} from '../config/mongoCollections.js'
 import util from './utilities.js'
 import validations from '../validations.js'
@@ -86,10 +86,10 @@ const exportedMethods = {
   },
 
   async getQuestionById (id) {
-    id = validations.checkId(id, 'ID')
+    // id = validations.checkId(id, 'ID')
     let questionCollectionList = await questionCollection()
     let question = await questionCollectionList.findOne({
-      _id: new ObjectId(id)
+      _id: id
     })
     if (!question) {
       throw new Error('Error: Question not found')
@@ -108,6 +108,24 @@ const exportedMethods = {
       throw new Error('Error: Question not found')
     }
     return { ...deletedQuestion, deleted: true }
+  },
+
+  async getCommentsByQuestionId(questionId) {
+    const commentsCollection = await comments();
+    return commentsCollection.find({ questionId: questionId }).toArray();
+  },
+
+  async addComment(questionId, text) {
+    const commentsCollection = await comments();
+    const newComment = {
+      questionId: questionId,
+      text,
+      createdAt: new Date()
+    };
+
+    const result = await commentsCollection.insertOne(newComment);
+
+    return newComment.text;
   }
 }
 

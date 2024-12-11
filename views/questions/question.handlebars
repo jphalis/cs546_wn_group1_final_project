@@ -1,0 +1,43 @@
+<h1>Question ID: {{_id}}</h1>
+
+<main>
+    <section>
+        <h2>Detailed Question Information</h2>
+        <ul>
+            <li><strong>Created At:</strong> {{created_ts}}</li>
+            <li><strong>Last Updated At:</strong> {{updated_at}}</li>
+            <li><strong>Question:</strong> {{question}}</li>
+            <li><strong>Answer:</strong> {{answer}}</li>
+            <li><strong>Associated Company ID:</strong><a href="../companies/{{company_id}}"> {{company_id}}</a></li>
+            <li><strong>Role:</strong> {{role}}</li>
+            <li><strong>Difficulty:</strong> {{difficulty}}</li>
+            <li><strong>Times Reported by Other Users:</strong> {{reports}}</li>
+            <li><strong>Location:</strong> {{location}}</li>
+            <li><strong>Years of Experience for Position:</strong> {{experience}}</li>
+            <li><strong>Origin of Question:</strong> {{question_source}}</li>
+            <li><strong>Method of Interview:</strong> {{type}}</li>
+            <li><strong>Type of Question:</strong> {{category}}</li>
+        </ul>
+    </section>
+    <section class="comment-section">
+        <h2>Comments</h2>
+        {{#if comments.length}}
+            <ul>
+                {{#each comments}}
+                    <li>
+                        <div class="comment">
+                            <p><strong>Comment:</strong> {{text}}</p>
+                            <small><strong>Posted at:</strong> {{createdAt}}</small>
+                        </div>
+                    </li>
+                {{/each}}
+            </ul>
+        {{else}}
+            <p>No comments yet. Be the first to comment!</p>
+        {{/if}}
+        <form action="/questions/{{_id}}/comments" method="POST">
+            <textarea name="text" placeholder="Write your comment here..." required></textarea>
+            <button type="submit">Post Comment</button>
+        </form>
+    </section>
+</main>

@@ -16,3 +16,4 @@ const getCollectionFn = (collection) => {
 export const users = getCollectionFn('users');
 export const questions = getCollectionFn('questions');
 export const companies = getCollectionFn('companies');
+export const comments = getCollectionFn('comments');
