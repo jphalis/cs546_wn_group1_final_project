@@ -1,68 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Company List</title>
-  <link rel="stylesheet" href="/css/styles.css"> 
-</head>
-<body>
-  <header>
-    <h1>Company List</h1>
+<h1>Company List</h1>
 
-  </header>
+<main>
+  <ul id="company-list">
+    {{#each companies}}
+    <li class="company-item">
+      <a href="/companies/{{this._id}}">{{this.name}}</a>
+    </li>
+    {{/each}}
+  </ul>
+  <div id="loading" style="display:none;">Loading more companies...</div>
+</main>
 
-  <main>
-    <ul id="company-list">
-      {{#each companies}}
-        <li class="company-item">
-          <a href="/companies/{{this._id}}">{{this.name}}</a>
-        </li>
-      {{/each}}
-    </ul>
-    <div id="loading" style="display:none;">Loading more companies...</div>
-  </main>
+<script>
+  let page = 2;
+  let loading = false;
 
-  <script>
-    let page = 2;
-    let loading = false;
+  // Function to load more companies
+  async function loadMoreCompanies() {
+    if (loading) return;
 
-    // Function to load more companies
-    async function loadMoreCompanies() {
-      if (loading) return;
+    loading = true;
+    document.getElementById('loading').style.display = 'block';
 
-      loading = true;
-      document.getElementById('loading').style.display = 'block';
-
-      try {
-        const response = await fetch(`/companies/page/${page}`);
-        if (response.ok) {
-          const companies = await response.json();
-          if (companies.length > 0) {
-            const companyList = document.getElementById('company-list');
-            companies.forEach(company => {
-              const li = document.createElement('li');
-              li.className = 'company-item';
-              li.innerHTML = `<a href="/companies/${company._id}">${company.name}</a>`;
-              companyList.appendChild(li);
-            });
-            page++;
-          }
+    try {
+      const response = await fetch(`/companies/page/${page}`);
+      if (response.ok) {
+        const companies = await response.json();
+        if (companies.length > 0) {
+          const companyList = document.getElementById('company-list');
+          companies.forEach(company => {
+            const li = document.createElement('li');
+            li.className = 'company-item';
+            li.innerHTML = `<a href="/companies/${company._id}">${company.name}</a>`;
+            companyList.appendChild(li);
+          });
+          page++;
         }
-      } catch (error) {
-        console.error('Error loading more companies:', error);
-      } finally {
-        loading = false;
-        document.getElementById('loading').style.display = 'none';
       }
+    } catch (error) {
+      console.error('Error loading more companies:', error);
+    } finally {
+      loading = false;
+      document.getElementById('loading').style.display = 'none';
     }
+  }
 
-    // Infinite scroll event listener
-    window.addEventListener('scroll', () => {
-      if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
-        loadMoreCompanies();
-      }
-    });
-  </script>
-</body>
-</html>
+  // Infinite scroll event listener
+  window.addEventListener('scroll', () => {
+    if (window.innerHeight + window.scrollY >= document.body.offsetHeight - 200) {
+      loadMoreCompanies();
+    }
+  });
+</script>

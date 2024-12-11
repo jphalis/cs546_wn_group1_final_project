@@ -20,6 +20,10 @@ const exportedMethods = {
     let password = await bcrypt.hash(passwordPlainText, saltRounds)
 
     let userCollection = await usersCollection()
+    const existingUser = await userCollection.findOne({ email: email })
+    if (existingUser) {
+      throw new Error('This email already exists in our system')
+    }
     let newUser = {
       firstName,
       lastName,
@@ -48,6 +52,16 @@ const exportedMethods = {
     id = validations.checkId(id, 'ID')
     let userCollection = await usersCollection()
     let user = await userCollection.findOne({ _id: new ObjectId(id) })
+    if (!user) {
+      throw new Error('Error: User not found')
+    }
+    return user
+  },
+
+  async getUserByEmail (email) {
+    email = validations.checkEmail(email, 'Email')
+    let userCollection = await usersCollection()
+    let user = await userCollection.findOne({ email: email })
     if (!user) {
       throw new Error('Error: User not found')
     }

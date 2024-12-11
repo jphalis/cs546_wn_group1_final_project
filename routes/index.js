@@ -1,21 +1,24 @@
 // This file will import both route files and export the constructor method
 
-import path from 'path'
 import { static as staticDir } from 'express'
-import userRoutes from './users.js'
 import companyRoutes from './companies.js'
+import dashboardRoutes from './dashboard.js'
+import loginRoutes from './login.js'
+import tempRoutes from './temp_paths.js'
+import userRoutes from './users.js'
 
 const constructorMethod = app => {
-  app.get('/about', (req, res) => {
-    res.sendFile(path.resolve('static/about.html'))
-  })
   app.use('/public', staticDir('public'))
   app.use('/users', userRoutes)
+  app.use('/createQuestion', tempRoutes)
+  app.use('/login', loginRoutes)
   app.use('/companies', companyRoutes)
+  app.use('/dashboard', dashboardRoutes)
+  app.get('/', (req, res) => {
+    res.render('generic/home', {})
+  })
   app.use('*', (req, res) => {
-    res.sendFile(path.resolve('static/index.html'))
-    // return res.status(404).json({ error: 'Not found' })
-    // res.redirect('/posts');
+    res.redirect('/')
   })
 }
 

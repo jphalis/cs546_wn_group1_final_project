@@ -16,3 +16,36 @@ label {
 .error-list li {
     color: #ff0000;
 }
+
+.website-title {
+    text-decoration: underline;
+    font-style: italic;
+    padding: 10px;
+    margin-bottom: 2em;
+    text-align: center;
+}
+
+.user-email {
+    color: orange;
+    padding-left: 30px;
+}
+
+.carousel-custom-style {
+    background-color: #3C4043;
+    color: #fff;
+    padding: 4em;
+    max-width: 100%;
+    margin-top: 20px;
+}
+
+.nav {
+    margin: 2em;
+    width: 100%;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.nav-item {
+    margin-left: 3em;
+    margin-right: 3em;
+}

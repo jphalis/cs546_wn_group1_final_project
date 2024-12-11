@@ -51,7 +51,7 @@ for (let i = 0; i < 10; i++) {
       bio
     )
     console.log(
-      `Created user: ${firstName} ${lastName} (${email}) - ${password}`
+      `Created user: ${firstName} ${lastName} (${email}) | Password: ${password}`
     )
   } catch (e) {
     console.error(

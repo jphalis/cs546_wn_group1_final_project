@@ -15,8 +15,10 @@
         "@faker-js/faker": "^9.1.0",
         "assert": "^2.1.0",
         "bcrypt": "^5.1.1",
+        "cs-546-group-1-final-project": "file:",
         "express": "^4.21.1",
         "express-handlebars": "^7.1.2",
-        "mongodb": "^6.10.0"
+        "mongodb": "^6.10.0",
+        "openai": "^4.76.0"
     }
 }

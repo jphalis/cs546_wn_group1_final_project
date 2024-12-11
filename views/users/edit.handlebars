@@ -5,47 +5,48 @@
             <input type="hidden" id="userId" name="userId" value="{{user._id}}">
             <label>
                 First Name
-                <input type="text" id="firstName" name="firstName" placeholder="First Name" value="{{user.firstName}}"
-                    class="full-width-input">
+                <input type="text" class="form-control full-width-input" id="firstName" name="firstName"
+                    placeholder="First Name" value="{{user.firstName}}">
             </label>
             <br>
             <label>
                 Last Name
-                <input type="text" id="lastName" name="lastName" placeholder="Last Name" value="{{user.lastName}}"
-                    class="full-width-input">
+                <input type="text" class="form-control full-width-input" id="lastName" name="lastName"
+                    placeholder="Last Name" value="{{user.lastName}}">
             </label>
             <br>
             <label>
                 Email
-                <input type="email" id="email" name="email" placeholder="Email" value="{{user.email}}"
-                    class="full-width-input">
+                <input type="email" class="form-control full-width-input" id="email" name="email" placeholder="Email"
+                    value="{{user.email}}">
             </label>
             <label>
                 Old Password
-                <input type="password" id="password" name="password" placeholder="Old Password"
-                    value="{{user.password}}" class="full-width-input">
+                <input type="password" class="form-control full-width-input" id="password" name="password"
+                    placeholder="Old Password" value="{{user.password}}">
             </label>
             <label>
                 New Password
-                <input type="password" id="newPassword" name="newPassword" placeholder="New Password" value=""
-                    class="full-width-input">
+                <input type="password" class="form-control full-width-input" id="newPassword" name="newPassword"
+                    placeholder="New Password" value="">
             </label>
             <label>
                 Confirm New Password
-                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm New Password"
-                    value="" class="full-width-input">
+                <input type="password" class="form-control full-width-input" id="confirmPassword" name="confirmPassword"
+                    placeholder="Confirm New Password" value="">
             </label>
             <label>
                 Phone Number
-                <input type="tel" id="phoneNumber" name="phoneNumber" placeholder="Phone Number"
-                    value="{{user.phoneNumber}}" class="full-width-input">
+                <input type="tel" class="form-control full-width-input" id="phoneNumber" name="phoneNumber"
+                    placeholder="Phone Number" value="{{user.phoneNumber}}">
             </label>
             <label>
                 Bio
-                <input type="text" id="bio" name="bio" placeholder="Bio" value="{{user.bio}}" class="full-width-input">
+                <input type="text" class="form-control full-width-input" id="bio" name="bio" placeholder="Bio"
+                    value="{{user.bio}}">
             </label>
             <br>
-            <button type="submit">Save Changes</button>
+            <button type="submit" class="btn btn-success">Save Changes</button>
         </form>
 
         {{#if hasErrors}}

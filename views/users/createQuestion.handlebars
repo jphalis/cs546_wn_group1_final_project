@@ -1,0 +1,54 @@
+<section>
+    <article>
+<h1>Submit Your Own Question</h1>
+<!--id="createQuestionForm" -->
+<form action="/createQuestion/submit" method="POST">
+    <label for="user_question_input">Enter Question</label>
+    <input type="text" id="user_question_input" name="user_question_input" required>
+    <br>
+
+    <label for="user_question_role">Enter Role</label>
+    <input type="text" id="user_question_role" name="user_question_role" required>
+    <br>
+
+    <label for="user_question_diff">Enter Difficulty</label>
+    <input type="text" id="user_question_diff" name="user_question_diff" required>
+    <br>
+
+    <label for="user_question_company">Enter Company</label>
+    <input type="text" id="user_question_company" name="user_question_company" required>
+    <br>
+
+    <label for="user_question_location">Enter Location</label>
+    <input type="text" id="user_question_location" name="user_question_location" required>
+    <br>
+
+    <label for="user_question_experience">Enter Experience</label>
+    <input type="text" id="user_question_experience" name="user_question_experience" required>
+    <br>
+
+    <label for="user_question_type">Enter Type</label>
+    <input type="text" id="user_question_type" name="user_question_type" required>
+    <br>
+
+    <label for="user_question_category">Enter Category</label>
+    <input type="text" id="user_question_category" name="user_question_category" required>
+    <br>
+    
+    <button type="submit">Submit</button>
+</form>
+<!--
+{{#if hasErrors}}
+        <ul class="error-list">
+            {{#each errors}}
+            <li>
+                {{this}}
+            </li>
+            {{/each}}
+        </ul>
+        {{/if}}
+
+<script src="../../public/js/submit_question_val_check.js" type="module"></script> 
+-->
+</article>
+</section>
