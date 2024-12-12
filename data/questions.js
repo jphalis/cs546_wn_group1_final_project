@@ -24,7 +24,7 @@ const exportedMethods = {
     let userQuestionExperience = experience
     let userQuestionType = type
     let userQuestionCategory = category
-    //answer                     = validations.checkString(answer, "Answer");
+    let userAnswer = validations.generateAnswer(question, company);
 
     //fill in other fields for db doc
     let createdTime = util.getCurrentDateTime()
@@ -45,7 +45,7 @@ const exportedMethods = {
       experience: userQuestionExperience,
       questionSource: 'User',
       type: userQuestionType,
-      answer: answer,
+      answer: userAnswer,
       answerSource: 'Generated',
       category: userQuestionCategory
     }
