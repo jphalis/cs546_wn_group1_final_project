@@ -9,15 +9,15 @@
 </head>
 
 <body>
-<header>
-  <h1>{{company.name}}</h1>
-  <div class="difficulty-rating">
+  <header>
+    <h1>{{company.name}}</h1>
+    <div class="difficulty-rating">
     <strong>Overall Rating:</strong>
     <div class="star-rating" data-difficulty="{{company.overallDifficulty}}">
-      <!-- The stars will be dynamically rendered here -->
+        <!-- The stars will be dynamically rendered here -->
     </div>
-  </div>
-</header>
+    </div>
+  </header>
 
   <main>
     <section>
@@ -31,20 +31,20 @@
         <li><strong>Interview Questions:</strong>
           <table class="table table-striped">
             <thead>
-            <tr>
-              <th>Question ID</th>
-              <th>Role</th>
-              <th>Difficulty</th>
-              <th>Location</th>
-              <th>Experience</th>
-              <th>Question</th>
-              <th>Answer</th>
-            </tr>
+              <tr>
+                <th>Question ID</th>
+                <th>Role</th>
+                <th>Difficulty</th>
+                <th>Location</th>
+                <th>Experience</th>
+                <th>Question</th>
+                <th>Answer</th>
+              </tr>
             </thead>
             <tbody>
-            {{#each companyQuestions}}
+              {{#each companyQuestions}}
               <tr>
-                <td><a href="../questions/{{_id}}">{{_id}}</td>
+                <td>{{_id}}</td>
                 <td>{{role}}</td>
                 <td>{{difficulty}}</td>
                 <td>{{location}}</td>
@@ -52,7 +52,7 @@
                 <td>{{question}}</td>
                 <td>{{answer}}</td>
               </tr>
-            {{/each}}
+              {{/each}}
             </tbody>
           </table>
         </li>
