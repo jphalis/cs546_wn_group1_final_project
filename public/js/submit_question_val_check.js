@@ -11,7 +11,7 @@ let questionType = document.getElementById("user_question_type");
 let questionCategory = document.getElementById("user_question_category");
 
 if (myForm) {
-  myForm.addEventListener("submit", async (event) => {
+  myForm.addEventListener("submit", (event) => {
     event.preventDefault();
     console.log("CLIENT SIDEEE");
     //validate all inputs

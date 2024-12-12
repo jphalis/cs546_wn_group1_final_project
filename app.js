@@ -41,6 +41,13 @@ app.use(rewriteUnsupportedBrowserMethods)
 app.engine('handlebars', handlebarsInstance.engine)
 app.set('view engine', 'handlebars')
 
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+  next();
+});
+
+
 configRoutes(app)
 
 app.listen(3000, () => {

@@ -56,5 +56,25 @@ import validations from '../validations.js'
   })
   
 
-
+  router
+  .route('/interviewQ')
+  .get((req, res) => {
+    try {
+      res.render('users/liveMock')
+    } catch (e) {
+      return res.status(500).send(e)
+    }
+  })
+  .post(async (req, res) => {
+    
+    console.log("INSIDE ROUTE POST");
+    let userInfo = req.body;
+    console.log(userInfo);
+    if (!userInfo || Object.keys(userInfo).length === 0) {
+      return res
+        .status(400)
+        .json({ error: 'There are no fields in the request body' })
+    }
+    
+  })
 export default router
