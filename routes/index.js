@@ -6,6 +6,7 @@ import dashboardRoutes from './dashboard.js'
 import loginRoutes from './login.js'
 import tempRoutes from './temp_paths.js'
 import userRoutes from './users.js'
+import questionRoutes from './questions.js'
 
 const constructorMethod = app => {
   app.use('/public', staticDir('public'))
@@ -14,6 +15,7 @@ const constructorMethod = app => {
   app.use('/login', loginRoutes)
   app.use('/companies', companyRoutes)
   app.use('/dashboard', dashboardRoutes)
+  app.use('/questions', questionRoutes)
   app.get('/', (req, res) => {
     res.render('generic/home', {})
   })
