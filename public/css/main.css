@@ -50,6 +50,39 @@ label {
     margin-right: 3em;
 }
 
+/* Overall difficulty stars */
+.star-rating {
+    display: inline-flex;
+    align-items: center;
+}
+
+.star {
+    font-size: 24px;
+    margin-right: 4px;
+}
+
+.star.full {
+    color: #ffc107; /* Gold color for full stars */
+}
+
+.star.half {
+    color: #ffc107; /* Gold for half stars */
+    position: relative;
+}
+
+.star.half::after {
+    content: '\2605'; /* Unicode for star */
+    color: #d3d3d3; /* Gray color for empty portion */
+    position: absolute;
+    left: 50%; /* Half overlay */
+    width: 50%;
+    overflow: hidden;
+}
+
+.star.empty {
+    color: #d3d3d3; /* Gray color for empty stars */
+}
+
 /* Styles specific to the comment section */
 .comment-section {
     margin-top: 20px;
