@@ -24,15 +24,14 @@ let myForm = document.getElementById("createQuestionForm");
 if (myForm) {
   myForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    console.log("CLIENT SIDEEE");
-    let questionInput = document.getElementById("user_question_input");
+
+    try {
+      let questionInput = document.getElementById("user_question_input");
     let questionRole = document.getElementById("user_question_role");
     let questionDifficulty = document.getElementById("user_question_diff");
     let questionCompany = document.getElementById("user_question_company");
     let questionLocation = document.getElementById("user_question_location");
-    let questionExperience = document.getElementById(
-      "user_question_experience"
-    );
+    let questionExperience = document.getElementById("user_question_experience");
     let questionType = document.getElementById("user_question_type");
     let questionCategory = document.getElementById("user_question_category");
     
@@ -40,7 +39,7 @@ if (myForm) {
     //validate all inputs
     checkString(questionInput, "User Question");
     checkString(questionRole, "Question Role");
-    checkEmail(questionDifficulty , "Question Difficulty");
+    checkString(questionDifficulty , "Question Difficulty");
     checkString(questionCompany, "Question Company");
     checkString(questionLocation, "Question Location");
     checkString(questionExperience, "Question Experience");
@@ -54,6 +53,16 @@ if (myForm) {
       errorDiv.textContent = "ERROR User Update Fail";
       document.getElementById("error-div").appendChild(errorDiv);
     }
+    } catch (error) {
+      let errorDiv = document.createElement("div");
+      errorDiv.classList.add("error-div");
+      errorDiv.textContent = error;
+      document.getElementById("error-div").appendChild(errorDiv);
+    }
+    
+
+
+
 
   });
 }

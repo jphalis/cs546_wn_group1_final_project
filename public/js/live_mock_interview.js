@@ -20,7 +20,7 @@ function checkString(strVal, varName) {
 }
 
 function checkEmail(strVal, varName) {
-  strVal = this.checkString(strVal, varName);
+  strVal = checkString(strVal, varName);
   let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(strVal)) {
     throw new Error("Error: Invalid email format");
@@ -53,7 +53,7 @@ if (mockInterviewForm) {
       //set up AJAX request config
       let requestConfig = {
         method: "POST",
-        url: "/createQuestion/interviewQuestion",
+        url: "/users/interviewQuestion",
         contentType: "application/json",
         data: JSON.stringify({
           firstName: firstName,

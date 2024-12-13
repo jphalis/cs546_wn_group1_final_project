@@ -2,7 +2,7 @@
     <article>
 <h1>Submit Your Own Question</h1>
 <!--id="createQuestionForm" -->
-<form action="/createQuestion/submit" method="POST">
+<form action="/users/submit" method="POST">
     <label for="user_question_input">Enter Question</label>
     <input type="text" id="user_question_input" name="user_question_input" required>
     <br>
@@ -39,6 +39,8 @@
 </form>
 </article>
 </section>
+
+
 <div class="error-div" id="error-div"> {{message}} </div>
 
 

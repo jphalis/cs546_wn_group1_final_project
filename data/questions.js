@@ -1,5 +1,5 @@
 import {comments, questions as questionCollection} from '../config/mongoCollections.js'
-import * as companies from "../data/companies.js";
+import { companiesData } from "../data/index.js";
 import util from './utilities.js'
 import validations from '../validations.js'
 import questions from "../routes/questions.js";
@@ -33,7 +33,7 @@ const exportedMethods = {
     let updatedTime = util.getCurrentDateTime()
 
     // get companyID from company data file(@Fred1110)
-    userQuestionCompany = companies.showCompanyId(userQuestionCompany);
+    userQuestionCompany = companiesData.showCompanyId(userQuestionCompany);
     
     const questionCollectionList = await questionCollection()
     let newQuestion = {
