@@ -19,6 +19,9 @@
             <li><strong>Type of Question:</strong> {{category}}</li>
         </ul>
     </section>
+    <div class="like-container">
+        <button id="likeButton" data-id="{{_id}}" class="like-button">👍 Like ({{upvote}})</button>
+    </div>
     <section class="comment-section">
         <h2>Comments</h2>
         {{#if comments.length}}
@@ -41,3 +44,43 @@
         </form>
     </section>
 </main>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const likeButton = document.getElementById("likeButton");
+
+    if (likeButton) {
+        likeButton.addEventListener("click", async () => {
+            const questionId = likeButton.getAttribute("data-id");
+            if (!questionId) {
+                console.error("Question ID is missing.");
+                return;
+            }
+
+            try {
+                const response = await fetch(`/questions/${questionId}/upvote`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ questionId }),
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    console.log("Upvote successful:", result);
+
+                    const currentText = likeButton.textContent;
+                    const currentCount = parseInt(currentText.match(/\d+/)[0], 10);
+                    likeButton.textContent = `👍 Like (${currentCount + 1})`;
+                } else {
+                    console.error("Upvote failed:", await response.text());
+                }
+            } catch (error) {
+                console.error("Error sending upvote request:", error);
+            }
+        });
+    } else {
+        console.error("Like button not found in the DOM.");
+    }
+  });
+</script>

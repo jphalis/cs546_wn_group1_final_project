@@ -2,6 +2,7 @@ import {comments, questions as questionCollection} from '../config/mongoCollecti
 // import {companies as companiesCollection} from '../config/mongoCollections.js'
 import util from './utilities.js'
 import validations from '../validations.js'
+import questions from "../routes/questions.js";
 
 const exportedMethods = {
   async createNewQuestion (
@@ -112,6 +113,7 @@ const exportedMethods = {
 
   async getCommentsByQuestionId(questionId) {
     const commentsCollection = await comments();
+
     return commentsCollection.find({ questionId: questionId }).toArray();
   },
 
@@ -126,6 +128,18 @@ const exportedMethods = {
     const result = await commentsCollection.insertOne(newComment);
 
     return newComment.text;
+  },
+
+  async upvote(questionId){
+    const questions = await questionCollection();
+
+    const filter = { _id: questionId };
+    const update = { $inc: { upvote: 1 } };
+    const options = { upsert: true };
+
+    const result = await questions.updateOne(filter, update, options);
+
+    return result;
   }
 }
 
