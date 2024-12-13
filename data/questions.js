@@ -1,5 +1,5 @@
 import { questions as questionCollection } from '../config/mongoCollections.js'
-// import {companies as companiesCollection} from '../config/mongoCollections.js'
+import * as companies from "../data/companies.js"; 
 import util from './utilities.js'
 import validations from '../validations.js'
 
@@ -24,14 +24,15 @@ const exportedMethods = {
     let userQuestionExperience = experience
     let userQuestionType = type
     let userQuestionCategory = category
-    //answer                     = validations.checkString(answer, "Answer");
+    answer = validations.generateAnswer(userQuestion, userQuestionCompany);
 
     //fill in other fields for db doc
     let createdTime = util.getCurrentDateTime()
     let updatedTime = util.getCurrentDateTime()
 
     // get companyID from company data file(@Fred1110)
-    //userQuestionCompany = companies.getCompanyId(userQuestionCompany);
+    userQuestionCompany = companies.showCompanyId(userQuestionCompany);
+    
     const questionCollectionList = await questionCollection()
     let newQuestion = {
       created_ts: createdTime,
@@ -58,7 +59,7 @@ const exportedMethods = {
     if (!insertResult.insertedId) {
       throw new Error('Error: Could not create the question')
     }
-    return { _id: insertResult.insertedId.toString(), ...newQuestion }
+    return { registrationCompleted: true };
   },
   async getAllQuestions () {
     let questionCollectionList = await questionCollection()
