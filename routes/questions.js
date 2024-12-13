@@ -30,4 +30,27 @@ router
         }
     });
 
+router
+    .route('/:questionId/upvote')
+    .post(async (req, res) => {
+        try {
+            const { questionId } = req.params;
+
+            if (!questionId) {
+                return res.status(400).send({ success: false, error: "Missing questionId in URL." });
+            }
+
+            const result = await questionData.upvote(questionId);
+
+            res.status(200).send({
+                success: true,
+                matchedCount: result.matchedCount,
+                modifiedCount: result.modifiedCount,
+            });
+        } catch (e) {
+            console.error("Error updating upvote:", e);
+            res.status(500).send({ success: false, error: "Internal Server Error" });
+        }
+    });
+
 export default router
