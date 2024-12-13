@@ -62,16 +62,29 @@ router.route('/page/:page').get(async (req, res) => {
 router
   .route('/:companyId')
   .get(async (req, res) => {
-    // try {
-    //   req.params.id = validations.checkId(req.params.companyId, 'Company ID')
-    // } catch (e) {
-    //   return res.status(400).json({ error: e })
-    // }
     try {
       const company = await companiesData.getCompanyById(req.params.companyId)
       const companyQuestions = await questionData.getCompanyQuestions(
         req.params.companyId
       )
+
+      const totalQuestions = companyQuestions.length;
+      if (totalQuestions === 0) {
+        company.overallDifficulty = "No questions available"
+      } else {
+        let difficultySum = 0;
+
+        for (const question of companyQuestions) {
+          if (question.difficulty === "Easy") difficultySum += 1;
+          else if (question.difficulty === "Medium") difficultySum += 2;
+          else if (question.difficulty === "Hard") difficultySum += 3;
+        }
+
+        const averageDifficulty = difficultySum / totalQuestions;
+
+        const overallDifficulty = 2 * averageDifficulty - 1; //Convert to 5-point scale
+        company.overallDifficulty = parseFloat(overallDifficulty.toFixed(1));
+      }
       res.render('companies/company', {
         company: company,
         companyQuestions: companyQuestions
