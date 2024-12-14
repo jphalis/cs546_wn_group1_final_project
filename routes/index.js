@@ -4,14 +4,12 @@ import { static as staticDir } from 'express'
 import companyRoutes from './companies.js'
 import dashboardRoutes from './dashboard.js'
 import loginRoutes from './login.js'
-import tempRoutes from './temp_paths.js'
 import userRoutes from './users.js'
 import questionRoutes from './questions.js'
 
 const constructorMethod = app => {
   app.use('/public', staticDir('public'))
   app.use('/users', userRoutes)
-  app.use('/createQuestion', tempRoutes)
   app.use('/login', loginRoutes)
   app.use('/companies', companyRoutes)
   app.use('/dashboard', dashboardRoutes)
