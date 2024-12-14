@@ -1,6 +1,6 @@
-import { Router } from 'express'
+import { Router } from 'express';
+import { questionData } from "../data/index.js";
 let router = Router()
-import {questionData} from "../data/index.js";
 
 router
   .route('/:questionId')
@@ -10,7 +10,8 @@ router
       const comments = await questionData.getCommentsByQuestionId(req.params.questionId);
       res.render('questions/question', {
         ...question,
-          comments
+          comments,
+          isAuthenticated: req.session.user
       });
     } catch (e) {
       return res.status(404).json(e);

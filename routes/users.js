@@ -1,16 +1,18 @@
-import { Router } from 'express'
-let router = Router()
 import bcrypt from 'bcrypt'
+import { Router } from 'express'
 import { usersData } from '../data/index.js'
 import validations from '../validations.js'
+let router = Router()
 
 router
   .route('/')
   .get(async (req, res) => {
     try {
       const userList = await usersData.getAllUsers()
-      res.render('users/index', { users: userList })
-    } catch (e) {
+      res.render('users/index', { 
+        users: userList, 
+        isAuthenticated: req.session.user 
+      })    } catch (e) {
       return res.status(500).send(e)
     }
   })
@@ -80,7 +82,8 @@ router
         email: user.email,
         password: user.password,
         phoneNumber: user.phoneNumber,
-        bio: user.bio
+        bio: user.bio,
+        isAuthenticated: req.session.user 
       })
     } catch (e) {
       return res.status(404).json(e)
@@ -200,7 +203,7 @@ router
     }
     try {
       const user = await usersData.getUserById(req.params.userId)
-      res.render('users/edit', { user: user })
+      res.render('users/edit', { user: user,isAuthenticated: req.session.user})
     } catch (e) {
       return res.status(404).json(e)
     }
@@ -283,7 +286,8 @@ router
       res.render('users/edit', {
         errors: errors,
         hasErrors: true,
-        user: user
+        user: user,
+        isAuthenticated: req.session.user 
       })
       return
     }

@@ -2,23 +2,43 @@
 
 import { static as staticDir } from 'express'
 import companyRoutes from './companies.js'
-import dashboardRoutes from './dashboard.js'
 import loginRoutes from './login.js'
+import questionRoutes from './questions.js'
 import tempRoutes from './temp_paths.js'
 import userRoutes from './users.js'
-import questionRoutes from './questions.js'
 
 const constructorMethod = app => {
+  const isAuthenticated = (req, res, next) => {
+    if (req.session && req.session.user) {
+      return next()
+    } else {
+      return res.redirect('/login/signinuser')
+    }
+  }
+
+  const redirectIfAuthenticated = (req, res, next) => {
+    if (req.session && req.session.user) {
+      return res.redirect('/') 
+    }
+    next()
+  }
+
   app.use('/public', staticDir('public'))
-  app.use('/users', userRoutes)
-  app.use('/createQuestion', tempRoutes)
-  app.use('/login', loginRoutes)
-  app.use('/companies', companyRoutes)
-  app.use('/dashboard', dashboardRoutes)
-  app.use('/questions', questionRoutes)
-  app.get('/', (req, res) => {
-    res.render('generic/home', {})
+
+  app.use('/login', redirectIfAuthenticated, loginRoutes) 
+  app.get('/generic/home', (req, res) => {
+    res.render('generic/home', {  isAuthenticated: req.session.user  }) 
   })
+
+  app.use('/createQuestion', isAuthenticated, tempRoutes)
+  app.use('/companies', isAuthenticated, companyRoutes)
+  app.use('/users', isAuthenticated, userRoutes) 
+  app.use('/questions', isAuthenticated, questionRoutes)
+
+  app.get('/', (req, res) => {
+    return res.redirect('/generic/home') 
+  })
+
   app.use('*', (req, res) => {
     res.redirect('/')
   })

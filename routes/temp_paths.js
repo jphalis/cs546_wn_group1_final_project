@@ -10,7 +10,7 @@ import validations from '../validations.js'
   .get((req, res) => {
     try {
       
-      res.render('users/createQuestion')
+      res.render('users/createQuestion', {isAuthenticated: req.session.user})
     } catch (e) {
       return res.status(500).send(e)
     }

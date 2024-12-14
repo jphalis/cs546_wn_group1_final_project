@@ -1,0 +1,34 @@
+<body>
+    <h1>Interview Statistics by Company</h1>
+
+    {{#each companies}}
+    <div class="company-statistics">
+        <h2>{{this.name}} - Interview Statistics</h2>
+
+        <p><strong>Total Number of Questions:</strong> {{this.totalQuestions}}</p>
+        <p><strong>Interview Locations:</strong> 
+            {{#each this.interviewLocations}}
+                {{this}}{{#unless @last}}, {{/unless}}
+            {{/each}}
+        </p>
+        <p><strong>Years of Experience Required:</strong> {{this.yearsOfExperience}} years</p>
+        <p><strong>Types of Questions:</strong>
+            {{#each this.questionTypes}}
+                {{this}}{{#unless @last}}, {{/unless}}
+            {{/each}}
+        </p>
+
+        <h3>Detailed Breakdown</h3>
+        <ul>
+            {{#each this.detailedBreakdown}}
+                <li>
+                    <strong>{{this.category}}:</strong> 
+                    {{this.count}} questions
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    <hr>
+    {{/each}}
+
+</body>
