@@ -19,6 +19,27 @@ function checkString(strVal, varName) {
   return strVal;
 };
 
+function checkInt(intVal, varName) {
+  if (intVal === undefined || intVal === null) {
+    throw new Error(`Error: You must supply a ${varName}!`);
+  }
+
+  // If the input is not a number or cannot be converted to one
+  if (typeof intVal === "string") {
+    intVal = intVal.trim(); // Remove extra spaces
+    if (!/^-?\d+$/.test(intVal)) { // Check if it's an integer-like string
+      throw new Error(`Error: ${varName} must be a valid integer!`);
+    }
+    intVal = parseInt(intVal, 10); // Convert the valid string to an integer
+  }
+
+  if (typeof intVal !== "number" || !Number.isInteger(intVal)) {
+    throw new Error(`Error: ${varName} must be a valid integer!`);
+  }
+
+  return intVal;
+};
+
 function checkUserQuestion(
   questionInput,
   questionRole,
@@ -35,7 +56,7 @@ function checkUserQuestion(
   questionDifficulty = checkString(questionDifficulty, "Question Difficulty");
   questionCompany = checkString(questionCompany, "Question Company");
   questionLocation = checkString(questionLocation, "Question Location");
-  questionExperience = checkString(questionExperience, "Question Experience");
+  questionExperience = checkInt(questionExperience, "Question Experience");
   questionType = checkString(questionType, "Question Type");
   questionCategory = checkString(questionCategory, "Question Category");
 

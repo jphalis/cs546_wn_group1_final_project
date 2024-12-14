@@ -69,6 +69,7 @@ function checkDate(date,time){
 function checkMockInterview(firstName,LastName,email,interviewType,date,time)
 {
   let allValidFields = true;
+
   firstName = checkString(firstName, "First Name");
   LastName = checkString(LastName, "Last Name");
   email = checkEmail(email, "Email");

@@ -26,50 +26,43 @@ router.route("/submit").post(async (req, res) => {
       req.body.user_question_category
     );
 
+    if(validQuestion)
+    {
+      let aiAnswer = "";
 
-
-  let aiAnswer = "";
-
-  //after complete save it to DB
-  let newQuestion = await questionData.createNewQuestion(
-    req.body.user_question_input,
-    aiAnswer,
-    req.body.user_question_role,
-    req.body.user_question_diff,
-    req.body.user_question_company,
-    req.body.user_question_location,
-    req.body.user_question_experience,
-    req.body.user_question_type,
-    req.body.user_question_category
-  );
-
-  //check if sucessful (use lab returning true)
-  if (newQuestion.registrationCompleted) {
-    try {
-      res.redirect("/users/thankYouSubmission");
-    } catch (e) {
-      res.status(500).json({ error: e });
+      let newQuestion = await questionData.createNewQuestion(
+        req.body.user_question_input,
+        aiAnswer,
+        req.body.user_question_role,
+        req.body.user_question_diff,
+        req.body.user_question_company,
+        req.body.user_question_location,
+        req.body.user_question_experience,
+        req.body.user_question_type,
+        req.body.user_question_category
+      );
+    
+      if (newQuestion.registrationCompleted) {
+        try {
+          res.redirect("/users/thankYouSubmission");
+        } catch (e) {
+          res.status(500).json({ error: e });
+        }
+      } else {
+        
+        try {
+          res.render("error", { message: "Adding New Question Failed"});
+        } catch (e) {
+          res.status(500).json({ error: e });
+        }
+          
+      }
     }
-  } else {
-    /*
-    try {
-      res.render("error", {
-        message: "sign in fail",
-        userLink: req.session.isAuthenticated,
-      });
-    } catch (e) {
-      res.status(500).json({ error: e });
-    }
-      */
-  }
+
+  
   } catch (error) {
     res.status(400).render('generic/error', {message: error});
   }
-  
-  
-
-
-  
 });
 
 router
@@ -101,9 +94,10 @@ router
       
 
       let validInputs = validations.checkMockInterview(firstName,LastName,email,interviewType,date,time);
-
+    
       if(!validInputs)
       {
+       
         res.status(404).render('generic/error',{ message: "Invalid Inputs" });
       }
 
