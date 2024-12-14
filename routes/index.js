@@ -3,8 +3,6 @@
 import { static as staticDir } from 'express'
 import companyRoutes from './companies.js'
 import loginRoutes from './login.js'
-import questionRoutes from './questions.js'
-import tempRoutes from './temp_paths.js'
 import userRoutes from './users.js'
 
 const constructorMethod = app => {

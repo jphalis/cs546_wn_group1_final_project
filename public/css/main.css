@@ -50,6 +50,19 @@ label {
     margin-right: 3em;
 }
 
+.thank-you {
+    font-size: 20px;
+    color: green;
+    text-align: center;
+    margin-top: 20px;
+}
+
+.error {
+    font-size: 50px;
+    color: red;
+    text-align: center;
+    margin-top: 50px;
+}
 /* Overall difficulty stars */
 .star-rating {
     display: inline-flex;
