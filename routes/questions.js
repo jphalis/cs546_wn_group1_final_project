@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { questionData } from "../data/index.js";
 let router = Router()
+import xss from 'xss';
 
 router
   .route('/:questionId')
@@ -22,8 +23,8 @@ router
     .route('/:questionId/comments')
     .post(async (req, res) => {
         try {
-            const { text } = req.body;
-            const newComment = await questionData.addComment(req.params.questionId, text);
+            const sanitizedText = xss(req.body.text);
+            const newComment = await questionData.addComment(req.params.questionId, sanitizedText);
             res.redirect(`/questions/${req.params.questionId}`);
         } catch (e) {
             console.error('Error:', e);
