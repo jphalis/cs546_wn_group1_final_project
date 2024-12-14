@@ -5,6 +5,7 @@ import {
 import { companiesData } from '../data/index.js'
 import validations from '../validations.js'
 import util from './utilities.js'
+import xss from 'xss'
 
 const exportedMethods = {
   async createNewQuestion (
