@@ -4,35 +4,48 @@ import express from 'express';
 import exphbs from 'express-handlebars';
 import session from 'express-session';
 import configRoutes from './routes/index.js';
-const app = express()
+
+const app = express();
 
 const rewriteUnsupportedBrowserMethods = (req, res, next) => {
-  // If the user posts to the server with a property called _method, rewrite the request's method
-  // To be that method; so if they post _method=PUT you can now allow browsers to POST to a route that gets
-  // rewritten in this middleware to a PUT route
   if (req.body && req.body._method) {
-    req.method = req.body._method
-    delete req.body._method
+    req.method = req.body._method;
+    delete req.body._method;
   }
+  next();
+};
 
-  // Let the next middleware run:
-  next()
-}
+const isAuthenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    return next();
+  } else {
+    return res.redirect('/login/signinuser');
+  }
+};
+
+const redirectIfAuthenticated = (req, res, next) => {
+  if (req.session && req.session.user) {
+    return res.redirect('/');
+  }
+  next();
+};
 
 const handlebarsInstance = exphbs.create({
   defaultLayout: 'main',
-  // Specify helpers which are only registered on this instance.
   helpers: {
     asJSON: (obj, spacing) => {
       if (typeof spacing === 'number')
-        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing))
-
-      return new Handlebars.SafeString(JSON.stringify(obj))
+        return new Handlebars.SafeString(JSON.stringify(obj, null, spacing));
+      return new Handlebars.SafeString(JSON.stringify(obj));
     },
-
     partialsDir: ['views/partials/']
   }
-})
+});
+
+app.use((req, res, next) => {
+  res.set('Cache-Control', 'no-store');
+  next();
+});
 
 app.use(
   session({
@@ -40,20 +53,28 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
-    cookie: {maxAge: 60000}
+    cookie: { maxAge: 60000 }
   })
 );
-app.use('/public', express.static('public'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(rewriteUnsupportedBrowserMethods)
+app.use('/public', express.static('public'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(rewriteUnsupportedBrowserMethods);
 
-app.engine('handlebars', handlebarsInstance.engine)
-app.set('view engine', 'handlebars')
+app.engine('handlebars', handlebarsInstance.engine);
+app.set('view engine', 'handlebars');
 
-configRoutes(app)
+// Apply global authentication middleware for certain routes
+app.use('/login', redirectIfAuthenticated);
+app.use('/companies', isAuthenticated);
+app.use('/questions', isAuthenticated);
+//app.use('/users', isAuthenticated);
 
+// Import and configure routes
+configRoutes(app);
+
+// Start the server
 app.listen(3000, () => {
-  console.log("We've now got a server!")
-  console.log('Your routes will be running on http://localhost:3000')
-})
+  console.log("We've now got a server!");
+  console.log('Your routes will be running on http://localhost:3000');
+});
