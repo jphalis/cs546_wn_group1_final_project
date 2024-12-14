@@ -3,7 +3,7 @@
 <form id="mockInterviewForm">
     <label for="firstName">FirstName:</label>
     <input type="text" id="firstName" name="firstName" placeholder="Enter your First Name" required>
-    
+
     <label for="LastName">LastName:</label>
     <input type="text" id="LastName" name="LastName" placeholder="Enter your Last Name" required>
 
@@ -13,9 +13,13 @@
     <label for="interviewType">Interview Type:</label>
     <select id="interviewType" name="interviewType" required>
         <option value="">Select an option</option>
-        <option value="Technical">Technical</option>
-        <option value="Behavioral">Behavioral</option>
-        <option value="Case Study">Case Study</option>
+        <option value="Screening">Screening Interview</option>
+        <option value="Technical">Technical Interview</option>
+        <option value="Behavioral">Behavioral Interview</option>
+        <option value="Case Study">Case Study Interview</option>
+        <option value="Situational">Situational Interview</option>
+        <option value="Competency-Based">Competency-Based Interview</option>
+        <option value="Stress">Stress Interview</option>
     </select>
 
     <label for="date">Preferred Date:</label>
@@ -26,6 +30,5 @@
 
     <button type="submit">Sign Up</button>
 </form>
-<div class="error-div" id="error-div"> {{message}} </div>
+<div id="error-div"> {{message}} </div>
 <script src="../../public/js/live_mock_interview.js" type="module"></script>
-

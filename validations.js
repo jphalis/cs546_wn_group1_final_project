@@ -72,6 +72,100 @@ const exportedMethods = {
     return arr
   },
 
+  isValidInterviewType(input) {
+    const validInterviewTypes = [
+      "Screening",
+      "Technical",
+      "Behavioral",
+      "Case Study",
+      "Situational",
+      "Competency-Based",
+      "Stress"
+    ];
+  
+    return validInterviewTypes.includes(input);
+  },
+
+  checkDate(date,time){
+    // Combine the date and time into a single string
+    let dateTimeString = `${date}T${time}:00`;
+      
+    // Convert the string to a Date object
+    let appointmentDate = new Date(dateTimeString);
+    
+    // Get the current date and time
+    let currentDate = new Date();
+    let dateCheck = false;
+    // Check if the appointment date is valid
+    if (!isNaN(appointmentDate)) {
+        if (appointmentDate > currentDate) {
+          dateCheck = true;
+        } else {
+          throw new Error("Date in the past");
+        }
+    } else {
+      throw new Error("Not A Valid Date");
+    }
+
+    return dateCheck;
+  },
+
+  checkMockInterview(firstName,LastName,email,interviewType,date,time)
+  {
+    let allValidFields = true;
+    firstName = checkString(firstName, "First Name");
+    LastName = checkString(LastName, "Last Name");
+    email = checkEmail(email, "Email");
+    interviewType = checkString(interviewType, "Interview Type");
+    date = checkString(date, "Date");
+    time = checkString(time, "Time");
+
+    let validInterviewType = isValidInterviewType(interviewType);
+
+    if(!validInterviewType)
+    {
+      allValidFields = false;
+      throw new Error("Interview Type Not Valid");
+    }
+
+    let validDate = checkDate(date,time);
+
+    if(!validDate)
+    {
+      allValidFields = false; 
+      throw new Error("Date Not Valid");
+    }
+    return allValidFields;
+  },
+
+  checkUserQuestion(questionInput,questionRole,questionDifficulty,questionCompany,questionLocation,questionExperience,questionType,questionCategory)
+  {
+    let validQuestion = false;
+    console.log("HIT 2");
+    questionInput = checkString(questionInput, "User Question");
+    questionRole = checkString(questionRole, "Question Role");
+    questionDifficulty = checkString(questionDifficulty, "Question Difficulty");
+    questionCompany = checkString(questionCompany, "Question Company");
+    questionLocation = checkString(questionLocation, "Question Location");
+    questionExperience = checkString(questionExperience, "Question Experience");
+    questionType = checkString(questionType, "Question Type");
+    questionCategory = checkString(questionCategory, "Question Category");
+    console.log("HIT 3");
+    if (questionInput &&
+        questionRole &&
+        questionDifficulty &&
+        questionCompany &&
+        questionLocation &&
+        questionExperience &&
+        questionType &&
+        questionCategory) 
+    {
+      validQuestion = true;
+    }
+
+    return validQuestion;
+  },
+
   // function for generating an AI-written solution to the question provided by the user
   async generateAnswer(question, company) {
 

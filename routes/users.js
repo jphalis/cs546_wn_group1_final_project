@@ -16,43 +16,31 @@ router.route("/createQuestion")
 
 router.route("/submit").post(async (req, res) => {
   try {
-    let userQuestion = validations.checkString(
-      req.body.user_question_input,
-      "User Question"
-    );
-    let userQuestionRole = validations.checkString(
+    let validQuestion = validations.checkUserQuestion(req.body.user_question_input,
       req.body.user_question_role,
-      "Role Question"
-    );
-    let userQuestionDifficulty = validations.checkString(
       req.body.user_question_diff,
-      "Difficulty Question"
-    );
-    let userQuestionCompany = validations.checkString(
       req.body.user_question_company,
-      "Company Question"
-    );
-    let userQuestionLocation = validations.checkString(
       req.body.user_question_location,
-      "Location Question"
+      req.body.user_question_experience,
+      req.body.user_question_type,
+      req.body.user_question_category
     );
 
-    let userQuestionExperience = req.body.user_question_experience;
-  let userQuestionType = req.body.user_question_type;
-  let userQuestionCategory = req.body.user_question_category;
+
+
   let aiAnswer = "";
 
   //after complete save it to DB
   let newQuestion = await questionData.createNewQuestion(
-    userQuestion,
+    req.body.user_question_input,
     aiAnswer,
-    userQuestionRole,
-    userQuestionDifficulty,
-    userQuestionCompany,
-    userQuestionLocation,
-    userQuestionExperience,
-    userQuestionType,
-    userQuestionCategory
+    req.body.user_question_role,
+    req.body.user_question_diff,
+    req.body.user_question_company,
+    req.body.user_question_location,
+    req.body.user_question_experience,
+    req.body.user_question_type,
+    req.body.user_question_category
   );
 
   //check if sucessful (use lab returning true)
@@ -75,7 +63,7 @@ router.route("/submit").post(async (req, res) => {
       */
   }
   } catch (error) {
-    res.render('generic/error', {message: error});
+    res.status(400).render('generic/error', {message: error});
   }
   
   
@@ -106,13 +94,25 @@ router
     ) {
       return res
         .status(400)
-        .json({ error: "There are no fields in the request body" });
+        .render('generic/error',{ message: "There are no fields in the request body" });
     }
 
-    //search for user
-
     try {
+      
+
+      let validInputs = validations.checkMockInterview(firstName,LastName,email,interviewType,date,time);
+
+      if(!validInputs)
+      {
+        res.status(404).render('generic/error',{ message: "Invalid Inputs" });
+      }
+
       let user = await usersData.getUserByEmail(email);
+
+      if(!user)
+      {
+        res.status(404).render('generic/error',{ message: "User Not Found, Email Not Valid" });
+      }
 
       let mockInterview = {
         firstName: firstName,
@@ -131,11 +131,11 @@ router
 
       let update = await usersData.updateUserPatch(user._id.toString(), user);
       if (!update) {
-        res.status(400).json({ error: "User Update Fail" });
+        res.status(400).render('generic/error',{ message: "User Update Fail" });
       }
       res.status(201).json(true);
     } catch (e) {
-      return res.status(404).json(e);
+      return res.status(404).render('generic/error',{ message: e });
     }
     //either add field and update
   });
