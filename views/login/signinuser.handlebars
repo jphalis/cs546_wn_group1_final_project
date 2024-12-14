@@ -4,16 +4,37 @@ login form handlebar template
 
 --}}
 
-<div class="row">
+{{#if error}}
+<p class="error-text">{{error}}</p>
+<br>
+{{/if}}
+<section>
+    <h3>Input email and password</h3>
+    <br>
+    <form class="signin-form" id="signin-form" method="post" action="/login/signinuser">
+        <label>
+            Email
+            <input type="email" id="email" name="email" placeholder="Email" class="full-width-input">
+        </label>
+        <br>
+        <label>
+            Password
+            <input type="password" id="password" name="password" placeholder="Password"
+                class="full-width-input">
+        </label>
+        <br><br>
+        <button class="btn btn-primary" type="submit" id="submit_button" name="submit_button">Sign in</button>
+        <br><br>
+        <a id="signoutLink" href="/login/signupuser">Don't Have an account? Sign Up!</a>
+    </form>
 
-    <div class="col-sm-12 col-md-4">
-               <form id="signin-form" action="/login/signinuser" method="POST">
-            <label for="signIn">Input username and password </label>
-            <input type="text" id="username" name="username" />
-            <input type="password" id="password" name="password"/>
-            <input type="submit" value="Search" name="submit_button" id="submit_button" />
-        </form>
-    </div>
-       <a id="signoutLink" href="/login/signupuser">Don't Have an account? Sign Up!</a>
-       <a id="signoutLink" href="/login/signoutuser">Sign out</a>
-</div>
+    {{#if hasErrors}}
+    <ul class="error-list">
+        {{#each errors}}
+        <li>
+            {{this}}
+        </li>
+        {{/each}}
+    </ul>
+    {{/if}}
+</section>
