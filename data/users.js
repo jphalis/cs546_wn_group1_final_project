@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb'
 import { users as usersCollection } from '../config/mongoCollections.js'
 import validations from '../validations.js'
+import xss from 'xss'
 const saltRounds = 16
 
 const exportedMethods = {

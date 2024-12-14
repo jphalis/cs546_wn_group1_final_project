@@ -1,4 +1,5 @@
 import OpenAI from "openai";
+import xss from 'xss'
 
 const exportedMethods = {
   checkString(strVal, varName) {
@@ -19,7 +20,7 @@ const exportedMethods = {
         `Error: ${strVal} is not a valid value for ${varName} as it only contains digits`
       );
     }
-    return strVal;
+    return xss(strVal);
   },
 
   checkEmail(strVal, varName) {
@@ -28,7 +29,7 @@ const exportedMethods = {
     if (!emailRegex.test(strVal)) {
       throw new Error("Error: Invalid email format");
     }
-    return strVal.toLowerCase();
+    return xss(strVal.toLowerCase());
   },
 
   checkPassword(strVal, varName) {
@@ -36,7 +37,7 @@ const exportedMethods = {
     if (strVal.length < 6) {
       throw new Error("Error: Your password must be longer than 5 characters");
     }
-    return strVal;
+    return xss(strVal);
   },
 
   checkId(id) {
