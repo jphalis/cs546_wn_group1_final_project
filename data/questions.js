@@ -1,13 +1,13 @@
 import {
   comments,
-  questions as questionCollection,
-} from "../config/mongoCollections.js";
-import { companiesData } from "../data/index.js";
-import validations from "../validations.js";
-import util from "./utilities.js";
+  questions as questionCollection
+} from '../config/mongoCollections.js'
+import { companiesData } from '../data/index.js'
+import validations from '../validations.js'
+import util from './utilities.js'
 
 const exportedMethods = {
-  async createNewQuestion(
+  async createNewQuestion (
     question,
     answer,
     role,
@@ -18,14 +18,14 @@ const exportedMethods = {
     type,
     category
   ) {
-    let userQuestion = question;
-    let userQuestionRole = role;
-    let userQuestionDifficulty = difficulty;
-    let userQuestionCompany = company;
-    let userQuestionLocation = location;
-    let userQuestionExperience = experience;
-    let userQuestionType = type;
-    let userQuestionCategory = category;
+    let userQuestion = xss(question)
+    let userQuestionRole = xss(role)
+    let userQuestionDifficulty = xss(difficulty)
+    let userQuestionCompany = xss(company)
+    let userQuestionLocation = xss(location)
+    let userQuestionExperience = xss(experience)
+    let userQuestionType = xss(type)
+    let userQuestionCategory = xss(category)
 
     let validQuestion = validations.checkUserQuestion(
       userQuestion,
@@ -36,24 +36,24 @@ const exportedMethods = {
       userQuestionExperience,
       userQuestionType,
       userQuestionCategory
-    );
+    )
 
-    let dup_question = await this.doesQuestionExist(userQuestion);
-   
+    let dup_question = await this.doesQuestionExist(userQuestion)
+
     if (dup_question) {
-      throw new Error("Question Already Exists");
+      throw new Error('Question Already Exists')
     } else {
       let userAnswer = await validations.generateAnswer(
         userQuestion,
         userQuestionCompany
-      );
-  
-      let createdTime = util.getCurrentDateTime();
-      let updatedTime = util.getCurrentDateTime();
+      )
 
-      userQuestionCompany = companiesData.showCompanyId(userQuestionCompany);
+      let createdTime = util.getCurrentDateTime()
+      let updatedTime = util.getCurrentDateTime()
 
-      const questionCollectionList = await questionCollection();
+      userQuestionCompany = companiesData.showCompanyId(userQuestionCompany)
+
+      const questionCollectionList = await questionCollection()
       let newQuestion = {
         created_ts: createdTime,
         updated_at: updatedTime,
@@ -64,130 +64,132 @@ const exportedMethods = {
         company_id: userQuestionCompany,
         location: userQuestionLocation,
         experience: userQuestionExperience,
-        questionSource: "User",
+        questionSource: 'User',
         type: userQuestionType,
         answer: userAnswer,
-        answerSource: "Generated",
+        answerSource: 'Generated',
         category: userQuestionCategory,
-        upvote: 0,
-      };
+        upvote: 0
+      }
 
-      let insertResult = await questionCollectionList.insertOne(newQuestion);
+      let insertResult = await questionCollectionList.insertOne(newQuestion)
 
       if (!insertResult.insertedId) {
-        throw new Error("Could not create the question");
+        throw new Error('Could not create the question')
       }
-      return { registrationCompleted: true };
+      return { registrationCompleted: true }
     }
-  },
-  async getAllQuestions() {
-    let questionCollectionList = await questionCollection();
-    let allQuestions = await questionCollectionList.find({}).toArray();
-    if (allQuestions.length === 0) {
-      throw new Error("There are no question found in the database.");
-    }
-    return allQuestions;
   },
 
-  async getCompanyQuestions(companyId) {
+  async getAllQuestions () {
+    let questionCollectionList = await questionCollection()
+    let allQuestions = await questionCollectionList.find({}).toArray()
+    if (allQuestions.length === 0) {
+      throw new Error('There are no question found in the database.')
+    }
+    return allQuestions
+  },
+
+  async getCompanyQuestions (companyId) {
     try {
-      let questionCollectionList = await questionCollection();
+      let questionCollectionList = await questionCollection()
       let questions = await questionCollectionList
         .find({
-          company_id: companyId,
+          company_id: companyId
         })
-        .toArray();
-      let questionIds = questions.map((question) => question._id);
-      return questions;
+        .toArray()
+      let questionIds = questions.map(question => question._id)
+      return questions
     } catch (e) {
-      throw new Error(e);
+      throw new Error(e)
     }
   },
 
-  async getQuestionById(id) {
-    id = validations.checkId(id, "ID");
-    let questionCollectionList = await questionCollection();
+  async getQuestionById (id) {
+    id = validations.checkId(id, 'ID')
+    let questionCollectionList = await questionCollection()
     let question = await questionCollectionList.findOne({
-      _id: id,
-    });
+      _id: id
+    })
     if (!question) {
-      throw new Error("Error: Question not found");
+      throw new Error('Error: Question not found')
     }
-    return question;
+    return question
   },
 
-  async removeQuestion(id) {
-    id = validations.checkId(id, "ID");
-    let questionCollectionList = await questionCollection();
+  async removeQuestion (id) {
+    id = validations.checkId(id, 'ID')
+    let questionCollectionList = await questionCollection()
     let deletedQuestion = await questionCollectionList.findOneAndDelete({
-      _id: new ObjectId(id),
-    });
+      _id: new ObjectId(id)
+    })
 
     if (!deletedQuestion) {
-      throw new Error("Error: Question not found");
+      throw new Error('Error: Question not found')
     }
-    return { ...deletedQuestion, deleted: true };
+    return { ...deletedQuestion, deleted: true }
   },
 
-  async getCommentsByQuestionId(questionId) {
-    const commentsCollection = await comments();
+  async getCommentsByQuestionId (questionId) {
+    const commentsCollection = await comments()
 
-    return commentsCollection.find({ questionId: questionId }).toArray();
+    return commentsCollection.find({ questionId: questionId }).toArray()
   },
 
-  async addComment(questionId, text) {
-    const commentsCollection = await comments();
+  async addComment (questionId, text) {
+    const commentsCollection = await comments()
     const newComment = {
-      questionId: questionId,
-      text,
-      createdAt: new Date(),
-    };
+      questionId: xss(questionId),
+      text: xss(text),
+      createdAt: new Date()
+    }
 
-    const result = await commentsCollection.insertOne(newComment);
+    const result = await commentsCollection.insertOne(newComment)
 
-    return newComment.text;
+    return newComment.text
   },
 
-  async upvote(questionId) {
-    const questions = await questionCollection();
+  async upvote (questionId) {
+    const questions = await questionCollection()
 
-    const filter = { _id: questionId };
-    const update = { $inc: { upvote: 1 } };
-    const options = { upsert: true };
+    const filter = { _id: questionId }
+    const update = { $inc: { upvote: 1 } }
+    const options = { upsert: true }
 
-    const result = await questions.updateOne(filter, update, options);
+    const result = await questions.updateOne(filter, update, options)
 
-    return result;
+    return result
   },
-  async report(questionId) {
-    const questions = await questionCollection();
-  
-    const filter = { _id: questionId };
-  
+
+  async report (questionId) {
+    const questions = await questionCollection()
+
+    const filter = { _id: questionId }
+
     const update = {
       $inc: { reports: 1 }
-    };
-  
-    const options = { upsert: false };
-  
-    const result = await questions.updateOne(filter, update, options);
-  
-    return result;
-  },
-
-  async doesQuestionExist(userQuestion) {
-    let result = false;
-    let questionCollectionList = await questionCollection();
-    let allQuestions = await questionCollectionList
-      .find({ question: userQuestion })
-      .toArray();
-
-    if (allQuestions.length >= 1) {
-      result = true;
     }
 
-    return result;
-  },
-};
+    const options = { upsert: false }
 
-export default exportedMethods;
+    const result = await questions.updateOne(filter, update, options)
+
+    return result
+  },
+
+  async doesQuestionExist (userQuestion) {
+    let result = false
+    let questionCollectionList = await questionCollection()
+    let allQuestions = await questionCollectionList
+      .find({ question: userQuestion })
+      .toArray()
+
+    if (allQuestions.length >= 1) {
+      result = true
+    }
+
+    return result
+  }
+}
+
+export default exportedMethods
