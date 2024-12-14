@@ -22,6 +22,11 @@
     <div class="like-container">
         <button id="likeButton" data-id="{{_id}}" class="like-button">👍 Like ({{upvote}})</button>
     </div>
+    <div class="report-container">
+               <a id="reportButton" href="/questions/{{_id}}/report" class="report-link">
+            ⚠️ Report this question
+        </a>
+    </div>
     <section class="comment-section">
         <h2>Comments</h2>
         {{#if comments.length}}

@@ -1,7 +1,7 @@
 import { Router } from 'express'
-let router = Router()
 import { companiesData, questionData } from '../data/index.js'
 import validations from '../validations.js'
+let router = Router()
 
 router
   .route('/')
@@ -9,7 +9,7 @@ router
     //code here for GET
     try {
       const companiesList = await companiesData.getCompaniesByPage(1, 60)
-      res.render('companies/companyList', { companies: companiesList })
+      res.render('companies/companyList', { companies: companiesList, isAuthenticated: req.session.user })
     } catch (e) {
       return res.status(500).send(e)
     }
@@ -87,7 +87,8 @@ router
       }
       res.render('companies/company', {
         company: company,
-        companyQuestions: companyQuestions
+        companyQuestions: companyQuestions,
+        isAuthenticated: req.session.user
       })
     } catch (e) {
       return res.status(404).json(e)
@@ -199,6 +200,62 @@ router
     }
   })
 
+  router.route('/:companyId/statistics').get(async (req, res) => {
+    try {
+      const company = await companiesData.getCompanyById(req.params.companyId);
+      if (!company) {
+        return res.status(404).json({ error: 'Company not found' });
+      }
+  
+      const companyQuestions = await questionData.getCompanyQuestions(req.params.companyId);
+      const totalQuestions = companyQuestions.length;
+  
+      let difficultySum = 0;
+      let easyQuestions = 0;
+      let mediumQuestions = 0;
+      let hardQuestions = 0;
+      let interviewLocations = new Set();
+  
+      companyQuestions.forEach(question => {
+        if (question.difficulty === 'Easy') easyQuestions++;
+        else if (question.difficulty === 'Medium') mediumQuestions++;
+        else if (question.difficulty === 'Hard') hardQuestions++;
+  
+        if (question.location) {
+          interviewLocations.add(question.location);
+        }
+  
+        if (question.difficulty === 'Easy') difficultySum += 1;
+        else if (question.difficulty === 'Medium') difficultySum += 2;
+        else if (question.difficulty === 'Hard') difficultySum += 3;
+      });
+  
+      let averageDifficulty = 0;
+      if (totalQuestions > 0) {
+        averageDifficulty = (difficultySum / totalQuestions) * 2 - 1;
+      }
+  
+      const statistics = {
+        totalQuestions,
+        easyQuestions,
+        mediumQuestions,
+        hardQuestions,
+        interviewLocations: Array.from(interviewLocations),
+        averageDifficulty: totalQuestions > 0 ? parseFloat(averageDifficulty.toFixed(1)) : "No questions available"
+      };
+  
+      res.render('companies/companyStats', {
+        company,
+        statistics,
+        isAuthenticated: req.session.user
+      });
+    } catch (e) {
+      console.error(e);
+      return res.status(500).json({ error: e.message });
+    }
+  });
+  
+
 router.route('/companiessearch').post(async (req, res) => {
   try {
 
@@ -217,7 +274,7 @@ router.route('/companiessearch').post(async (req, res) => {
           error: `We're sorry, but no results were found for ${searchByTitle}`
         })
     } else {
-      res.render('companies/searchResults', { companies: companies, searchByTitle: searchByTitle })
+      res.render('companies/searchResults', { companies: companies, searchByTitle: searchByTitle, isAuthenticated: req.session.user })
     }
   } catch (e) {
     res.status(500).json({ error: e.message })

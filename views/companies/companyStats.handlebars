@@ -1,0 +1,46 @@
+<body>
+  <div class="container">
+    <header>
+      <h1>Statistics for {{company.name}}</h1>
+      <p>{{company.description}}</p>
+    </header>
+
+    <section class="statistics">
+      <h2>Statistics Overview</h2>
+      
+      <div class="stat-item">
+        <h3>Total Questions: <span>{{statistics.totalQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Easy Questions: <span>{{statistics.easyQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Medium Questions: <span>{{statistics.mediumQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Hard Questions: <span>{{statistics.hardQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Interview Locations:</h3>
+        <ul>
+          {{#each statistics.interviewLocations}}
+            <li>{{this}}</li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="stat-item">
+        <h3>Average Difficulty: <span>{{statistics.averageDifficulty}}</span></h3>
+      </div>
+    </section>
+    
+    <footer>
+      <a href="/companies/{{company._id}}">Back to Company Details</a>
+    </footer>
+  </div>
+</body>
+

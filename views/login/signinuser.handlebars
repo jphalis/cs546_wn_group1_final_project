@@ -1,0 +1,19 @@
+{{!--
+
+login form handlebar template
+
+--}}
+
+<div class="row">
+
+    <div class="col-sm-12 col-md-4">
+               <form id="signin-form" action="/login/signinuser" method="POST">
+            <label for="signIn">Input username and password </label>
+            <input type="text" id="username" name="username" />
+            <input type="password" id="password" name="password"/>
+            <input type="submit" value="Search" name="submit_button" id="submit_button" />
+        </form>
+    </div>
+       <a id="signoutLink" href="/login/signupuser">Don't Have an account? Sign Up!</a>
+       <a id="signoutLink" href="/login/signoutuser">Sign out</a>
+</div>

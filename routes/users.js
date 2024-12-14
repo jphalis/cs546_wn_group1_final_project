@@ -1,9 +1,8 @@
-import { Router } from "express";
-let router = Router();
 import bcrypt from "bcrypt";
-import { usersData } from "../data/index.js";
-import { questionData } from "../data/index.js";
+import { Router } from "express";
+import { questionData, usersData } from "../data/index.js";
 import validations from "../validations.js";
+let router = Router();
 
 router.route("/createQuestion")
 .get((req, res) => {
@@ -146,10 +145,12 @@ router
   .route("/")
   .get(async (req, res) => {
     try {
-      const userList = await usersData.getAllUsers();
-      res.render("users/index", { users: userList });
-    } catch (e) {
-      return res.status(500).send(e);
+      const userList = await usersData.getAllUsers()
+      res.render('users/index', { 
+        users: userList, 
+        isAuthenticated: req.session.user 
+      })    } catch (e) {
+      return res.status(500).send(e)
     }
   })
   .post(async (req, res) => {
@@ -222,7 +223,8 @@ router
         password: user.password,
         phoneNumber: user.phoneNumber,
         bio: user.bio,
-      });
+        isAuthenticated: req.session.user 
+      })
     } catch (e) {
       return res.status(404).json(e);
     }
@@ -340,8 +342,8 @@ router
       return res.status(400).json({ error: e });
     }
     try {
-      const user = await usersData.getUserById(req.params.userId);
-      res.render("users/edit", { user: user });
+      const user = await usersData.getUserById(req.params.userId)
+      res.render('users/edit', { user: user,isAuthenticated: req.session.user})
     } catch (e) {
       return res.status(404).json(e);
     }
@@ -425,8 +427,9 @@ router
         errors: errors,
         hasErrors: true,
         user: user,
-      });
-      return;
+        isAuthenticated: req.session.user 
+      })
+      return
     }
 
     try {

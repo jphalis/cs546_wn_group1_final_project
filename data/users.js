@@ -1,10 +1,56 @@
 import bcrypt from 'bcrypt'
-const saltRounds = 16
-import { users as usersCollection } from '../config/mongoCollections.js'
 import { ObjectId } from 'mongodb'
+import { users as usersCollection } from '../config/mongoCollections.js'
 import validations from '../validations.js'
+const saltRounds = 16
 
 const exportedMethods = {
+  async signInUser(email, password) {
+
+    email = validations.checkEmail(email, 'Email');
+    if(!email){
+      throw new Error("you must provide a userId");
+  }
+  email = email.trim().toLowerCase();
+  
+    password = validations.checkPassword(password);
+  
+    email = email.trim();
+    password = password.trim();
+  
+  
+    try {
+      let userCollection = await usersCollection()
+      const user = await userCollection.findOne({ email: email });
+  
+      if (!user) {
+        throw new Error("Either the userId or the password is invalid");
+      }
+  
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+  
+      if (isPasswordValid) {
+        console.log('The passwords match.. this is good');
+        
+        const returnObj = {
+          firstName: user.firstName,
+          lastName: user.lastName,
+          email: user.email,
+          favoriteQuote: user.favoriteQuote,
+          themePreference: user.themePreference,
+        };
+  
+        return returnObj;
+      } else {
+        console.log('The passwords do not match, this is not good, they should match');
+        throw new Error("Either the userId or the password is invalid");
+      }
+    } catch (error) {
+      console.error(error.message);
+      throw error;
+    }
+  },
+
   async createUser (
     firstName,
     lastName,
@@ -36,7 +82,8 @@ const exportedMethods = {
     if (!insertResult.insertedId) {
       throw new Error('Error: Could not create the user')
     }
-    return { _id: insertResult.insertedId.toString(), ...newUser }
+    return {registrationCompleted: true};
+
   },
 
   async getAllUsers () {
@@ -167,4 +214,4 @@ const exportedMethods = {
   }
 }
 
-export default exportedMethods
+export default exportedMethods;

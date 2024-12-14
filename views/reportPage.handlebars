@@ -1,0 +1,10 @@
+<body>
+    <h1>Report Question</h1>
+    <p>You are about to report the question with ID: {{questionId}}</p>
+
+    <form action="/questions/{{questionId}}/report" method="POST">
+        <label for="reportReason">Reason for Report:</label>
+        <textarea id="reportReason" name="reportReason" required></textarea>
+        <button type="submit">Submit Report</button>
+    </form>
+</body>
