@@ -20,7 +20,7 @@
         </ul>
     </section>
     <div class="like-container">
-        <button id="likeButton" data-id="{{_id}}" class="like-button">👍 Like ({{upvote}})</button>
+        <button id="likeButton" data-id="{{_id}}" class="like-button" title="You can only like a question once.">👍 Like ({{upvote}})</button>
     </div>
     <div class="report-container">
                <a id="reportButton" href="/questions/{{_id}}/report" class="report-link">
@@ -28,7 +28,7 @@
         </a>
     </div>
     <section class="comment-section">
-        <h2>Comments</h2>
+        <h2>Comments (all comments are anonymous)</h2>
         {{#if comments.length}}
             <ul>
                 {{#each comments}}
@@ -54,12 +54,21 @@
     const likeButton = document.getElementById("likeButton");
 
     if (likeButton) {
+        const questionId = likeButton.getAttribute("data-id");
+
+        if (!questionId) {
+            console.error("Question ID is missing.");
+            return;
+        }
+
+        const likedKey = `liked_${questionId}`;
+        if (localStorage.getItem(likedKey)) {
+            likeButton.disabled = true;
+            console.log("Like button already clicked for this question.");
+        }
+
         likeButton.addEventListener("click", async () => {
-            const questionId = likeButton.getAttribute("data-id");
-            if (!questionId) {
-                console.error("Question ID is missing.");
-                return;
-            }
+            if (likeButton.disabled) return;
 
             try {
                 const response = await fetch(`/questions/${questionId}/upvote`, {
@@ -77,6 +86,10 @@
                     const currentText = likeButton.textContent;
                     const currentCount = parseInt(currentText.match(/\d+/)[0], 10);
                     likeButton.textContent = `👍 Like (${currentCount + 1})`;
+
+                    localStorage.setItem(likedKey, "true");
+
+                    likeButton.disabled = true;
                 } else {
                     console.error("Upvote failed:", await response.text());
                 }
