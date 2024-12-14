@@ -3,6 +3,7 @@
 import { static as staticDir } from 'express'
 import companyRoutes from './companies.js'
 import loginRoutes from './login.js'
+import questionRoutes from './questions.js'
 import userRoutes from './users.js'
 
 const constructorMethod = app => {
@@ -28,7 +29,6 @@ const constructorMethod = app => {
     res.render('generic/home', {  isAuthenticated: req.session.user  }) 
   })
 
-  app.use('/createQuestion', isAuthenticated, tempRoutes)
   app.use('/companies', isAuthenticated, companyRoutes)
   app.use('/users', userRoutes) 
   app.use('/questions', isAuthenticated, questionRoutes)

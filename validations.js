@@ -1,4 +1,3 @@
-import { ObjectId } from "mongodb";
 import OpenAI from "openai";
 
 const exportedMethods = {
@@ -40,7 +39,7 @@ const exportedMethods = {
     return strVal;
   },
 
-  checkId(id, varName) {
+  checkId(id) {
     if (!id) {
       throw new Error("Error: You must provide an id to search for");
     }
@@ -51,9 +50,10 @@ const exportedMethods = {
     if (id.length === 0) {
       throw new Error("Error: id cannot be an empty string or just spaces");
     }
-    if (!ObjectId.isValid(id)) {
+   /* if (!ObjectId.isValid(id)) {
       throw new Error("Error: invalid object ID");
     }
+      */
     return id;
   },
 
