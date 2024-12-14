@@ -258,15 +258,15 @@ router
 
 router.route('/companiessearch').post(async (req, res) => {
   try {
+
     const { searchByTitle } = req.body
     if (!searchByTitle || !searchByTitle.trim()) {
-      res.status(400).render('error', { error: 'You must enter a search name' })
-      return
+      throw new Error ("You must enter a name");
     }
+
     const companies = await companiesData.getCompanyByTitle(
       searchByTitle.trim()
     )
-
     if (companies.length === 0) {
       res
         .status(404)
@@ -274,7 +274,7 @@ router.route('/companiessearch').post(async (req, res) => {
           error: `We're sorry, but no results were found for ${searchByTitle}`
         })
     } else {
-      res.render('companies/searchResults', { companies, searchByTitle, isAuthenticated: req.session.user })
+      res.render('companies/searchResults', { companies: companies, searchByTitle: searchByTitle, isAuthenticated: req.session.user })
     }
   } catch (e) {
     res.status(500).json({ error: e.message })

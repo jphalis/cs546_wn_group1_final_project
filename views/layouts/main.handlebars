@@ -27,6 +27,11 @@
 
     <main class="container">
         <h1 class="website-title bg-primary">CS546-WN Group 1 Final Project</h1>
+        <form id="company-search-form" action="/companies/companiessearch" method="POST">
+        <label for="searchByTitle">Search Company:</label>
+        <input type="text" id="searchByTitle" name="searchByTitle" placeholder="Enter company name" required />
+        <button type="submit">Search</button>
+        </form>
         <div class="row">
             <div>
                 {{{body}}}
