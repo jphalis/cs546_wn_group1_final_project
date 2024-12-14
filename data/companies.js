@@ -35,9 +35,8 @@ const exportedMethods = {
     //validate input
     try {
       const companiesCollection = await companies();
-      const company = await companiesCollection.find({name: title
+      const company = await companiesCollection.find({name: { $regex: title, $options: 'i' }
       }).toArray();
-      if(company.length() === 0) throw new Error("Companies not found");
       return company;
     }catch(e) {
       throw `Error: Error fetching company data: ${e}`;
