@@ -221,7 +221,9 @@ router
         else if (question.difficulty === 'Medium') mediumQuestions++;
         else if (question.difficulty === 'Hard') hardQuestions++;
   
-        if (question.interviewLocation) interviewLocations.add(question.interviewLocation);
+        if (question.location) {
+          interviewLocations.add(question.location);
+        }
   
         if (question.difficulty === 'Easy') difficultySum += 1;
         else if (question.difficulty === 'Medium') difficultySum += 2;
@@ -242,7 +244,7 @@ router
         averageDifficulty: totalQuestions > 0 ? parseFloat(averageDifficulty.toFixed(1)) : "No questions available"
       };
   
-      res.render('companies/companyStatistics', {
+      res.render('companies/companyStats', {
         company,
         statistics,
         isAuthenticated: req.session.user

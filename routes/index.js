@@ -32,7 +32,7 @@ const constructorMethod = app => {
 
   app.use('/createQuestion', isAuthenticated, tempRoutes)
   app.use('/companies', isAuthenticated, companyRoutes)
-  app.use('/users', isAuthenticated, userRoutes) 
+  app.use('/users', userRoutes) 
   app.use('/questions', isAuthenticated, questionRoutes)
 
   app.get('/', (req, res) => {
@@ -40,7 +40,11 @@ const constructorMethod = app => {
   })
 
   app.use('*', (req, res) => {
-    res.redirect('/')
+    if (req.session && req.session.user) {
+      return res.redirect('/');  
+    } else {
+      return res.redirect('/login/signinuser'); 
+    }
   })
 }
 

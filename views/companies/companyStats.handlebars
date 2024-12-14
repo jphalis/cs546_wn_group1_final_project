@@ -1,34 +1,46 @@
 <body>
-    <h1>Interview Statistics by Company</h1>
+  <div class="container">
+    <header>
+      <h1>Statistics for {{company.name}}</h1>
+      <p>{{company.description}}</p>
+    </header>
 
-    {{#each companies}}
-    <div class="company-statistics">
-        <h2>{{this.name}} - Interview Statistics</h2>
+    <section class="statistics">
+      <h2>Statistics Overview</h2>
+      
+      <div class="stat-item">
+        <h3>Total Questions: <span>{{statistics.totalQuestions}}</span></h3>
+      </div>
 
-        <p><strong>Total Number of Questions:</strong> {{this.totalQuestions}}</p>
-        <p><strong>Interview Locations:</strong> 
-            {{#each this.interviewLocations}}
-                {{this}}{{#unless @last}}, {{/unless}}
-            {{/each}}
-        </p>
-        <p><strong>Years of Experience Required:</strong> {{this.yearsOfExperience}} years</p>
-        <p><strong>Types of Questions:</strong>
-            {{#each this.questionTypes}}
-                {{this}}{{#unless @last}}, {{/unless}}
-            {{/each}}
-        </p>
+      <div class="stat-item">
+        <h3>Easy Questions: <span>{{statistics.easyQuestions}}</span></h3>
+      </div>
 
-        <h3>Detailed Breakdown</h3>
+      <div class="stat-item">
+        <h3>Medium Questions: <span>{{statistics.mediumQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Hard Questions: <span>{{statistics.hardQuestions}}</span></h3>
+      </div>
+
+      <div class="stat-item">
+        <h3>Interview Locations:</h3>
         <ul>
-            {{#each this.detailedBreakdown}}
-                <li>
-                    <strong>{{this.category}}:</strong> 
-                    {{this.count}} questions
-                </li>
-            {{/each}}
+          {{#each statistics.interviewLocations}}
+            <li>{{this}}</li>
+          {{/each}}
         </ul>
-    </div>
-    <hr>
-    {{/each}}
+      </div>
 
+      <div class="stat-item">
+        <h3>Average Difficulty: <span>{{statistics.averageDifficulty}}</span></h3>
+      </div>
+    </section>
+    
+    <footer>
+      <a href="/companies/{{company._id}}">Back to Company Details</a>
+    </footer>
+  </div>
 </body>
+

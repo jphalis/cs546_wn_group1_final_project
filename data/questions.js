@@ -1,8 +1,7 @@
-import {comments, questions as questionCollection} from '../config/mongoCollections.js'
+import { comments, questions as questionCollection } from '../config/mongoCollections.js';
 // import {companies as companiesCollection} from '../config/mongoCollections.js'
-import util from './utilities.js'
-import validations from '../validations.js'
-import questions from "../routes/questions.js";
+import validations from '../validations.js';
+import util from './utilities.js';
 
 const exportedMethods = {
   async createNewQuestion (
@@ -140,7 +139,24 @@ const exportedMethods = {
     const result = await questions.updateOne(filter, update, options);
 
     return result;
+  },
+  async report(questionId) {
+    const questions = await questionCollection();
+  
+    const filter = { _id: questionId };
+  
+    const update = {
+      $inc: { reports: 1 }
+    };
+  
+    const options = { upsert: false };
+  
+    const result = await questions.updateOne(filter, update, options);
+  
+    return result;
   }
 }
+  
+
 
 export default exportedMethods

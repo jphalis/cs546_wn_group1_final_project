@@ -54,4 +54,31 @@ router
         }
     });
 
+    router
+    .route('/:questionId/report')
+    .get((req, res) => {
+        console.log(`GET request for /questions/${req.params.questionId}/report`);
+        res.render('reportPage', { questionId: req.params.questionId });
+    })
+    .post(async (req, res) => {
+        try {
+            const { questionId } = req.params;
+
+            if (!questionId) {
+                return res.status(400).send({ success: false, error: "Missing questionId in URL." });
+            }
+
+            // Simulate reporting action
+            const result = await questionData.report(questionId);
+
+            console.log(`Report successful for questionId: ${questionId}`);
+            res.redirect(`/questions/${questionId}/report`);
+        } catch (e) {
+            console.error("Error updating report:", e);
+            res.status(500).send({ success: false, error: "Internal Server Error" });
+        }
+    });
+
+
+
 export default router
