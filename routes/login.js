@@ -67,9 +67,4 @@ router
     }
   })
 
-router.route('/signoutuser').get(async (req, res) => {
-  req.session.destroy()
-  res.redirect('/login/signinuser')
-})
-
 export default router
