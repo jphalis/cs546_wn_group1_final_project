@@ -1,36 +1,48 @@
+{{#if error}}
+<p class="error-text">{{error}}</p>
+<br>
+{{/if}}
 <div class="row">
   <div class="col-sm-12 col-md-4">
     <form action="/login/signupuser" method="POST" id="signup-form" name="signup-form">
-    
+
       <label for="firstName">First Name</label>
       <input type="text" id="firstName" name="firstName" required />
       <br>
-      
+
       <label for="lastName">Last Name</label>
       <input type="text" id="lastName" name="lastName" required />
       <br>
-      
+
       <label for="email">Email</label>
       <input type="email" id="email" name="email" required />
       <br>
-      
-      <label for="passwordPlainText">Password</label>
-      <input type="password" id="passwordPlainText" name="passwordPlainText" required />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required />
       <br>
-      
+
       <label for="phoneNumber">Phone Number</label>
       <input type="text" id="phoneNumber" name="phoneNumber" required />
       <br>
-      
+
       <label for="bio">Bio</label>
       <textarea id="bio" name="bio"></textarea>
       <br>
-      
-      <input type="submit" value="Sign Up" />
+
+      <button class="btn btn-primary" type="submit" id="submit_button" name="submit_button">Sign up</button>
     </form>
     <br>
-    <a id="signoutLink" href="/login/signinuser">Existing Account? Sign In</a>
+    {{#if hasErrors}}
+    <ul class="error-list">
+      {{#each errors}}
+      <li>
+        {{this}}
+      </li>
+      {{/each}}
+    </ul>
+    {{/if}}
     <br>
-    <a id="signoutLink" href="/login/signoutuser">Sign out</a>
+    <a id="signoutLink" href="/login/signinuser">Existing Account? Sign In</a>
   </div>
 </div>

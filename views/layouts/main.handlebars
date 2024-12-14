@@ -18,8 +18,9 @@
                 <li class="nav-item"><a href="/">Home</a></li>
                 <li class="nav-item"><a href="/users">Users</a></li>
                 <li class="nav-item"><a href="/companies">Companies</a></li>
+                {{#unless request.session.user}}
                 <li class="nav-item"><a href="/login/signupuser">Login/Signup</a></li>
-
+                {{/unless}}
             </ul>
         </nav>
     </header>
@@ -27,11 +28,6 @@
 
     <main class="container">
         <h1 class="website-title bg-primary">CS546-WN Group 1 Final Project</h1>
-        <form id="company-search-form" action="/companies/companiessearch" method="POST">
-        <label for="searchByTitle">Search Company:</label>
-        <input type="text" id="searchByTitle" name="searchByTitle" placeholder="Enter company name" required />
-        <button type="submit">Search</button>
-        </form>
         <div class="row">
             <div>
                 {{{body}}}
@@ -50,5 +46,4 @@
     <script src="/public/js/edit_user_form_validation.js"></script>
     <script type="text/javascript">new DataTable('#companyQuestionsTable');</script>
     <script type="text/javascript">new DataTable('#companySearchTable');</script>
-
 </html>

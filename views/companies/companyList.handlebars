@@ -1,6 +1,11 @@
 <h1>Company List</h1>
 
 <main>
+  <form id="company-search-form" action="/companies/companiessearch" method="POST">
+    <label for="searchByTitle">Search Company:</label>
+    <input type="text" id="searchByTitle" name="searchByTitle" placeholder="Enter company name" required />
+    <button type="submit">Search</button>
+  </form>
   <ul id="company-list">
     {{#each companies}}
     <li class="company-item">
