@@ -38,7 +38,7 @@ for (let i = 0; i < 10; i++) {
   let lastName = faker.person.lastName()
   let email = faker.internet.email()
   let password = faker.internet.password()
-  let phoneNumber = faker.phone.number()
+  let phoneNumber = faker.phone.number({ style: 'national' })
   let bio = faker.lorem.sentence()
 
   try {
