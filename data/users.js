@@ -2,7 +2,6 @@ import bcrypt from 'bcrypt'
 import { ObjectId } from 'mongodb'
 import { users as usersCollection } from '../config/mongoCollections.js'
 import validations from '../validations.js'
-import xss from 'xss'
 const saltRounds = 16
 
 const exportedMethods = {
@@ -84,7 +83,7 @@ const exportedMethods = {
     if (!insertResult.insertedId) {
       throw new Error('Error: Could not create the user')
     }
-    return { registrationCompleted: true }
+    return newUser
   },
 
   async getAllUsers () {
@@ -200,6 +199,9 @@ const exportedMethods = {
       )
       userInfo.password = await bcrypt.hash(passwordPlainText, saltRounds)
     }
+    delete userInfo.newPassword;
+    delete userInfo.confirmPassword;
+
     const userCollection = await usersCollection()
     const updateInfo = await userCollection.findOneAndUpdate(
       { _id: new ObjectId(id) },

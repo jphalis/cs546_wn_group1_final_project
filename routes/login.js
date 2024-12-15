@@ -31,7 +31,7 @@ router
         req.body.bio
       )
       console.log(userInfo)
-      if (userInfo && userInfo.registrationCompleted === true) {
+      if (userInfo) {
         req.session.user = userInfo
         res.status(200).redirect('/login/signinuser')
       }
