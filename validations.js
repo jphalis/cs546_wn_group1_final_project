@@ -230,11 +230,11 @@ const exportedMethods = {
 
   //check phone number at signup
   checkPhoneNumber (phoneNumber) {
-    if (!phoneNumber) throw new Error('You must provide a phone number')
-    if (!isValidPhoneNumber(phoneNumber, 'US'))
-      throw new Error('Phone number must be a valid US number')
-    let num = phoneNumber.trim()
-    return num
+    if (!phoneNumber) throw new Error ('You must provide a phone number');
+    if (isNaN(phoneNumber)) throw new Error ('Phone number must be a valid number');
+    let num = phoneNumber.trim();
+    if (num.length !== 10) throw new Error ('Phone number must be a valid 10-digit number.');
+    return num;
   }
 }
 
