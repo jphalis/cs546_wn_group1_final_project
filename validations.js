@@ -132,11 +132,10 @@ const exportedMethods = {
     return intVal;
   },
 
-  checkMockInterview(firstName, LastName, email, interviewType, date, time) {
+  checkMockInterview(firstName, LastName, interviewType, date, time) {
     let allValidFields = true;
     firstName = this.checkString(firstName, "First Name");
     LastName = this.checkString(LastName, "Last Name");
-    email = this.checkEmail(email, "Email");
     interviewType = this.checkString(interviewType, "Interview Type");
     date = this.checkString(date, "Date");
     time = this.checkString(time, "Time");

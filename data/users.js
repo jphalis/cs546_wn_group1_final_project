@@ -29,7 +29,7 @@ const exportedMethods = {
       const isPasswordValid = await bcrypt.compare(password, user.password)
 
       if (isPasswordValid) {
-        console.log('The passwords match.. this is good')
+        //console.log('The passwords match.. this is good')
 
         const returnObj = {
           firstName: user.firstName,

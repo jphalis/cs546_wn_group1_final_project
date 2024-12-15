@@ -52,7 +52,7 @@ const exportedMethods = {
       let createdTime = util.getCurrentDateTime()
       let updatedTime = util.getCurrentDateTime()
 
-      userQuestionCompany = companiesData.showCompanyId(userQuestionCompany)
+      userQuestionCompany = companiesData.showCompanyId(userQuestionCompany);
 
       const questionCollectionList = await questionCollection()
       let newQuestion = {
