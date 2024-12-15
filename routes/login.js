@@ -16,7 +16,6 @@ router
   })
   .post(async (req, res) => {
     //code here for POST
-    console.log(JSON.stringify(req.body))
     if (!req.body || Object.keys(req.body).length === 0) {
       return res
         .status(400)
