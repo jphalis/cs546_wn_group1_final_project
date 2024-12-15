@@ -91,7 +91,7 @@ app.use(async (req, res, next) => {
 app.use('/login', redirectIfAuthenticated);
 app.use('/companies', isAuthenticated);
 app.use('/questions', isAuthenticated);
-//app.use('/users', isAuthenticated);
+app.use('/users', isAuthenticated);
 
 // Import and configure routes
 configRoutes(app);
