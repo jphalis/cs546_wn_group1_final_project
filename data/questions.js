@@ -80,7 +80,6 @@ const exportedMethods = {
       if (!insertResult.insertedId) {
         throw new Error('Could not create the question')
       }
-      console.log(insertResult.insertedId)
       return { registrationCompleted: true }
     }
   },
