@@ -64,6 +64,7 @@ const exportedMethods = {
     lastName = validations.checkString(lastName, 'Last name')
     email = validations.checkEmail(email, 'Email')
     passwordPlainText = validations.checkPassword(passwordPlainText, 'Password')
+    phoneNumber = validations.checkPhoneNumber(phoneNumber);
     let password = await bcrypt.hash(passwordPlainText, saltRounds)
 
     let userCollection = await usersCollection()
