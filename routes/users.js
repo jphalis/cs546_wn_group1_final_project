@@ -149,7 +149,7 @@ router
       }
       return res.status(201).json(true);
     } catch (e) {
-      return res.status(404).render('generic/error',{ message: e });
+      return res.status(404).render('generic/error',{ message: e.message });
     }
   });
 
