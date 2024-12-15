@@ -201,3 +201,72 @@ button[disabled] {
     cursor: not-allowed;
     opacity: 0.6;
 }
+
+/* company list page */
+.image-standard {
+    width: 150px; 
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: auto;
+}
+
+#company-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 20px;
+    list-style: none;
+    margin: 0 auto;
+    max-width: 1200px;
+  }
+
+  /* Company Card */
+  .company-item {
+    background: #f8f9fa;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    padding: 15px;
+  }
+
+
+  .company-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-bottom: 1px solid #ddd;
+  }
+
+
+  .company-item a {
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    display: block;
+  }
+
+
+  .company-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+
+  .company-item:hover a {
+    color: #007bff;
+  }
+
+  /* company page */
+  .image-company {
+    width: 600px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: left;
+}
