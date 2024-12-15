@@ -53,7 +53,7 @@ app.use(
     secret: "This is a secret.. shhh don't tell anyone",
     saveUninitialized: false,
     resave: false,
-    cookie: { maxAge: 60000 }
+    cookie: { maxAge: 15 * 60 * 1000 }
   })
 );
 app.use('/public', express.static('public'));
@@ -65,6 +65,29 @@ app.engine('handlebars', handlebarsInstance.engine);
 app.set('view engine', 'handlebars');
 
 // Apply global authentication middleware for certain routes
+app.use(async (req, res, next) => {
+ 
+  if (req.session.isAuthenticated === undefined) {
+    req.session.isAuthenticated = false;
+  }
+  // Log request info
+  const logInfo = `[${new Date().toUTCString()}]: ${req.method} ${
+    req.originalUrl
+  } (${
+    req.session.isAuthenticated
+      ? `Authenticated ${
+          req.session.user && req.session.user.email
+            ? `Email: ${req.session.user.email}`
+            : "User"
+        }`
+      : "Non-Authenticated"
+  })`;
+  
+  console.log(logInfo);
+
+  next();
+});
+
 app.use('/login', redirectIfAuthenticated);
 app.use('/companies', isAuthenticated);
 app.use('/questions', isAuthenticated);

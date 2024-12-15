@@ -49,7 +49,6 @@ router
   })
   .post(async (req, res) => {
     try {
-      console.log(JSON.stringify(req.body))
       let email = req.body.email
       let password = req.body.password
 
@@ -57,6 +56,7 @@ router
 
       if (user) {
         req.session.user = user
+       req.session.isAuthenticated = true;
         res.status(200).redirect('/questions')
       } else {
         res.status(401).send('Invalid credentials. Please try again.')

@@ -18,15 +18,18 @@
                 <li class="nav-item"><a href="/">Home</a></li>
                 <li class="nav-item"><a href="/users">Users</a></li>
                 <li class="nav-item"><a href="/companies">Companies</a></li>
-                {{#unless request.session.user}}
+                {{#unless isAuthenticated}}
                 <li class="nav-item"><a href="/login/signupuser">Login/Signup</a></li>
                 {{/unless}}
                 <li class="nav-item"><a href="/logout">Logout</a></li>
+                {{#if isAuthenticated}}
+                <li class="nav-item"><a href="/users/createQuestion">Submit Question</a></li>
+                <li class="nav-item"><a href="/users/interviewQuestion">Schedule Mock Interview</a></li>
+                {{/if}}
             </ul>
         </nav>
     </header>
     <!-- End Navbar -->
-
     <main class="container">
         <h1 class="website-title bg-primary">CS546-WN Group 1 Final Project</h1>
         <div class="row">
@@ -47,4 +50,5 @@
     <script src="/public/js/edit_user_form_validation.js"></script>
     <script type="text/javascript">new DataTable('#companyQuestionsTable');</script>
     <script type="text/javascript">new DataTable('#companySearchTable');</script>
+</body>
 </html>

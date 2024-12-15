@@ -2,12 +2,13 @@ import bcrypt from "bcrypt";
 import { Router } from "express";
 import { questionData, usersData } from "../data/index.js";
 import validations from "../validations.js";
+import xss from 'xss';
 let router = Router();
 
 router.route("/createQuestion")
 .get((req, res) => {
   try {
-    res.render("users/createQuestion");
+    res.render("users/createQuestion", { isAuthenticated: req.session.user });
   } catch (e) {
     return res.status(500).send(e);
   }
@@ -15,14 +16,23 @@ router.route("/createQuestion")
 
 router.route("/submit").post(async (req, res) => {
   try {
-    let validQuestion = validations.checkUserQuestion(req.body.user_question_input,
-      req.body.user_question_role,
-      req.body.user_question_diff,
-      req.body.user_question_company,
-      req.body.user_question_location,
-      req.body.user_question_experience,
-      req.body.user_question_type,
-      req.body.user_question_category
+    let sanitizedQuestion = xss(req.body.user_question_input);
+    let sanitizedRole = xss(req.body.user_question_role);
+    let sanitizedDifficulty = xss(req.body.user_question_diff);
+    let sanitizedCompany = xss(req.body.user_question_company);
+    let sanitizedLocation = xss(req.body.user_question_location);
+    let sanitizedExperience = xss(req.body.user_question_experience);
+    let sanitizedType = xss(req.body.user_question_type);
+    let sanitizedCategory = xss(req.body.user_question_category);
+
+    let validQuestion = validations.checkUserQuestion(sanitizedQuestion,
+      sanitizedRole,
+      sanitizedDifficulty,
+      sanitizedCompany,
+      sanitizedLocation,
+      sanitizedExperience,
+      sanitizedType,
+      sanitizedCategory
     );
 
     if(validQuestion)
@@ -30,29 +40,29 @@ router.route("/submit").post(async (req, res) => {
       let aiAnswer = "";
 
       let newQuestion = await questionData.createNewQuestion(
-        req.body.user_question_input,
+        sanitizedQuestion,
         aiAnswer,
-        req.body.user_question_role,
-        req.body.user_question_diff,
-        req.body.user_question_company,
-        req.body.user_question_location,
-        req.body.user_question_experience,
-        req.body.user_question_type,
-        req.body.user_question_category
+        sanitizedRole,
+        sanitizedDifficulty,
+        sanitizedCompany,
+        sanitizedLocation,
+        sanitizedExperience,
+        sanitizedType,
+        sanitizedCategory
       );
     
       if (newQuestion.registrationCompleted) {
         try {
-          res.redirect("/users/thankYouSubmission");
+          return res.redirect("/users/thankYouSubmission");
         } catch (e) {
-          res.status(500).json({ error: e });
+          return res.status(500).json({ error: e });
         }
       } else {
         
         try {
-          res.render("error", { message: "Adding New Question Failed"});
+          return res.render("error", { message: "Adding New Question Failed"});
         } catch (e) {
-          res.status(500).json({ error: e });
+          return res.status(500).json({ error: e });
         }
           
       }
@@ -60,7 +70,7 @@ router.route("/submit").post(async (req, res) => {
 
   
   } catch (error) {
-    res.status(400).render('generic/error', {message: error});
+    return res.status(400).render('generic/error', {message: error});
   }
 });
 
@@ -68,7 +78,7 @@ router
   .route("/interviewQuestion")
   .get((req, res) => {
     try {
-      res.render("users/liveMock");
+      res.render("users/liveMock", { isAuthenticated: req.session.user });
     } catch (e) {
       return res.status(500).send(e);
     }
@@ -90,30 +100,41 @@ router
     }
 
     try {
-      
+      let sanitizedFirstName = xss(firstName);
+      let sanitizedLastName = xss(LastName);
+      let sanitizedEmail = xss(email);
+      let sanitizedInterviewType = xss(interviewType);
+      let sanitizedDate = xss(date);
+      let sanitizedTime = xss(time);
 
-      let validInputs = validations.checkMockInterview(firstName,LastName,email,interviewType,date,time);
+
+      let validInputs = validations.checkMockInterview(sanitizedFirstName,
+        sanitizedLastName,
+        sanitizedEmail,
+        sanitizedInterviewType,
+        sanitizedDate,
+        sanitizedTime);
     
       if(!validInputs)
       {
        
-        res.status(404).render('generic/error',{ message: "Invalid Inputs" });
+        return res.status(404).render('generic/error',{ message: "Invalid Inputs" });
       }
 
-      let user = await usersData.getUserByEmail(email);
-
+      let user = await usersData.getUserByEmail(sanitizedEmail);  // This will throw an error if no user is found
+      
       if(!user)
       {
-        res.status(404).render('generic/error',{ message: "User Not Found, Email Not Valid" });
+        return res.status(404).render('generic/error',{ message: "User Not Found, Email Not Valid" });
       }
 
       let mockInterview = {
-        firstName: firstName,
-        LastName: LastName,
-        email: email,
-        interviewType: interviewType,
-        date: date,
-        time: time,
+        firstName: sanitizedFirstName,
+        LastName: sanitizedLastName,
+        email: sanitizedEmail,
+        interviewType: sanitizedInterviewType,
+        date: sanitizedDate,
+        time: sanitizedTime,
       };
 
       if (!user.mockInterviews) {
@@ -124,18 +145,17 @@ router
 
       let update = await usersData.updateUserPatch(user._id.toString(), user);
       if (!update) {
-        res.status(400).render('generic/error',{ message: "User Update Fail" });
+        return res.status(400).render('generic/error',{ message: "User Update Fail" });
       }
-      res.status(201).json(true);
+      return res.status(201).json(true);
     } catch (e) {
       return res.status(404).render('generic/error',{ message: e });
     }
-    //either add field and update
   });
 
 router.route("/thankYouSubmission").get((req, res) => {
   try {
-    res.render("generic/submissionThankYou");
+    res.render("generic/submissionThankYou", { isAuthenticated: req.session.user });
   } catch (e) {
     return res.status(500).send(e);
   }
@@ -148,7 +168,7 @@ router
       const userList = await usersData.getAllUsers()
       res.render('users/index', { 
         users: userList, 
-        isAuthenticated: req.session.user 
+        isAuthenticated: req.session.user
       })    } catch (e) {
       return res.status(500).send(e)
     }
