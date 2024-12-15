@@ -270,3 +270,16 @@ button[disabled] {
     display: block;
     margin: left;
 }
+
+    #carouselExampleIndicators {
+        width: 1000px;
+        height: 400px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #carouselExampleIndicators .carousel-inner {
+        width: 100%;
+        height: 100%;
+        overflow-y: auto;
+    }
