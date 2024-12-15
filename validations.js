@@ -115,7 +115,7 @@ const exportedMethods = {
     if (intVal === undefined || intVal === null) {
       throw new Error(`Error: You must supply a ${varName}!`);
     }
-  
+
     // If the input is not a number or cannot be converted to one
     if (typeof intVal === "string") {
       intVal = intVal.trim(); // Remove extra spaces
@@ -124,14 +124,14 @@ const exportedMethods = {
       }
       intVal = parseInt(intVal, 10); // Convert the valid string to an integer
     }
-  
+
     if (typeof intVal !== "number" || !Number.isInteger(intVal)) {
       throw new Error(`Error: ${varName} must be a valid integer!`);
     }
-  
+
     return intVal;
   },
-  
+
   checkMockInterview(firstName, LastName, email, interviewType, date, time) {
     let allValidFields = true;
     firstName = this.checkString(firstName, "First Name");
@@ -220,6 +220,15 @@ const exportedMethods = {
       throw e;
     }
   },
+
+  //check phone number at signup
+  checkPhoneNumber (phoneNumber) {
+    if (!phoneNumber) throw new Error ('Error: you must provide a phone number');
+    if (isNaN(phoneNumber)) throw new Error ('Error: Phone number must be a valid number');
+    let num = phoneNumber.trim();
+    if (num.length !== 10) throw new Error ('Error: Not a valid phone number.');
+    return num;
+  }
 };
 
 export default exportedMethods;

@@ -95,95 +95,95 @@ router
       return res.status(404).json(e)
     }
   })
-  // .put(async (req, res) => {
-  //   let companyId = req.params.companyId
-  //   let requestBody = req.body
+  .put(async (req, res) => {
+    let companyId = req.params.companyId
+    let requestBody = req.body
 
-  //   try {
-  //     companyId = validations.checkId(companyId, 'Company ID')
-  //     if (!requestBody || Object.keys(requestBody).length === 0) {
-  //       throw new Error('You  ust provide data to update a company')
-  //     }
-  //     requestBody.name = validations.checkString(
-  //       requestBody.name,
-  //       "Company's name"
-  //     )
-  //     requestBody.description = validations.checkString(
-  //       requestBody.description,
-  //       "Company's description"
-  //     )
-  //     requestBody.size = validations.checkString(requestBody.size, 'Size')
-  //     requestBody.location = validation.checkString(
-  //       requestBody.location,
-  //       'Location'
-  //     )
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e.message })
-  //   }
+    try {
+      companyId = validations.checkId(companyId, 'Company ID')
+      if (!requestBody || Object.keys(requestBody).length === 0) {
+        throw new Error('You  ust provide data to update a company')
+      }
+      requestBody.name = validations.checkString(
+        requestBody.name,
+        "Company's name"
+      )
+      requestBody.description = validations.checkString(
+        requestBody.description,
+        "Company's description"
+      )
+      requestBody.size = validations.checkString(requestBody.size, 'Size')
+      requestBody.location = validation.checkString(
+        requestBody.location,
+        'Location'
+      )
+    } catch (e) {
+      return res.status(400).json({ error: e.message })
+    }
 
-  //   try {
-  //     const updatedCompany = await companiesData.updateCompany(
-  //       companyId,
-  //       requestBody.name,
-  //       requestBody.description,
-  //       requestBody.size,
-  //       requestBody.location
-  //     )
-  //     res.status(200).json(updatedCompany)
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e.message })
-  //   }
-  // })
-  // .patch(async (req, res) => {
-  //   let companyId = req.body.companyId
-  //   let companyInfo = req.body
+    try {
+      const updatedCompany = await companiesData.updateCompany(
+        companyId,
+        requestBody.name,
+        requestBody.description,
+        requestBody.size,
+        requestBody.location
+      )
+      res.status(200).json(updatedCompany)
+    } catch (e) {
+      return res.status(400).json({ error: e.message })
+    }
+  })
+  .patch(async (req, res) => {
+    let companyId = req.body.companyId
+    let companyInfo = req.body
 
-  //   if (!companyInfo || Object.keys(companyInfo).length === 0) {
-  //     return res
-  //       .status(400)
-  //       .json({ error: 'You must provdie data to update a company' })
-  //   }
-  //   try {
-  //     companyId = validations.checkId(companyId, 'Company ID')
+    if (!companyInfo || Object.keys(companyInfo).length === 0) {
+      return res
+        .status(400)
+        .json({ error: 'You must provdie data to update a company' })
+    }
+    try {
+      companyId = validations.checkId(companyId, 'Company ID')
 
-  //     if (companyInfo.name) {
-  //       companyInfo.name = validations.checkString(
-  //         companyInfo.name,
-  //         "Company's Name"
-  //       )
-  //     }
-  //     if (companyInfo.description) {
-  //       companyInfo.name = validations.checkString(
-  //         companyInfo.description,
-  //         'Description'
-  //       )
-  //     }
-  //     if (companyInfo.size) {
-  //       companyInfo.size = validations.checkString(companyInfo.size, 'Size')
-  //     }
-  //     if (companyInfo.location) {
-  //       companyInfo.location = validations.checkString(
-  //         companyInfo.location,
-  //         'Location'
-  //       )
-  //     }
-  //   } catch (e) {
-  //     return res.status(400).json({ error: e.message })
-  //   }
+      if (companyInfo.name) {
+        companyInfo.name = validations.checkString(
+          companyInfo.name,
+          "Company's Name"
+        )
+      }
+      if (companyInfo.description) {
+        companyInfo.name = validations.checkString(
+          companyInfo.description,
+          'Description'
+        )
+      }
+      if (companyInfo.size) {
+        companyInfo.size = validations.checkString(companyInfo.size, 'Size')
+      }
+      if (companyInfo.location) {
+        companyInfo.location = validations.checkString(
+          companyInfo.location,
+          'Location'
+        )
+      }
+    } catch (e) {
+      return res.status(400).json({ error: e.message })
+    }
 
-  //   try {
-  //     const updatedCompany = await companiesData.updateCompany(
-  //       companyId,
-  //       companyInfo.name,
-  //       companyInfo.description,
-  //       companyInfo.size,
-  //       companyInfo.location
-  //     )
-  //     res.status(200).json(updatedCompany)
-  //   } catch (e) {
-  //     return res.status(404).send({ error: e })
-  //   }
-  // })
+    try {
+      const updatedCompany = await companiesData.updateCompany(
+        companyId,
+        companyInfo.name,
+        companyInfo.description,
+        companyInfo.size,
+        companyInfo.location
+      )
+      res.status(200).json(updatedCompany)
+    } catch (e) {
+      return res.status(404).send({ error: e })
+    }
+  })
   // .delete(async (req, res) => {
   //   let companyId = req.params.companyId
 
