@@ -19,14 +19,7 @@ function checkString(strVal, varName) {
   return strVal;
 }
 
-function checkEmail(strVal, varName) {
-  strVal = checkString(strVal, varName);
-  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(strVal)) {
-    throw new Error("Invalid email format");
-  }
-  return strVal.toLowerCase();
-}
+
 
 function isValidInterviewType(input) {
   const validInterviewTypes = [
@@ -66,13 +59,13 @@ function checkDate(date,time){
   return dateCheck;
 };
 
-function checkMockInterview(firstName,LastName,email,interviewType,date,time)
+function checkMockInterview(firstName,LastName,interviewType,date,time)
 {
   let allValidFields = true;
 
   firstName = checkString(firstName, "First Name");
   LastName = checkString(LastName, "Last Name");
-  email = checkEmail(email, "Email");
+
   interviewType = checkString(interviewType, "Interview Type");
   date = checkString(date, "Date");
   time = checkString(time, "Time");
@@ -104,13 +97,12 @@ if (mockInterviewForm) {
     try {
       let firstName = document.getElementById("firstName").value.trim();
       let LastName = document.getElementById("LastName").value.trim();
-      let email = document.getElementById("email").value.trim();
       let interviewType = document.getElementById("interviewType").value.trim();
       let date = document.getElementById("date").value.trim();
       let time = document.getElementById("time").value.trim();
 
       //check for errors
-      let validInputs = checkMockInterview(firstName,LastName,email,interviewType,date,time);
+      let validInputs = checkMockInterview(firstName,LastName,interviewType,date,time);
 
       if (validInputs) {
         //set up AJAX request config
@@ -121,7 +113,6 @@ if (mockInterviewForm) {
           data: JSON.stringify({
             firstName: firstName,
             LastName: LastName,
-            email: email,
             interviewType: interviewType,
             date: date,
             time: time,

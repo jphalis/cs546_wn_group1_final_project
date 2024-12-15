@@ -89,7 +89,6 @@ router
     if (
       (!firstName || Object.keys(firstName).length === 0) &&
       (!LastName || Object.keys(LastName).length === 0) &&
-      (!email || Object.keys(email).length === 0) &&
       (!interviewType || Object.keys(interviewType).length === 0) &&
       (!date || Object.keys(date).length === 0) &&
       (!time || Object.keys(time).length === 0)
@@ -102,7 +101,6 @@ router
     try {
       let sanitizedFirstName = xss(firstName);
       let sanitizedLastName = xss(LastName);
-      let sanitizedEmail = xss(email);
       let sanitizedInterviewType = xss(interviewType);
       let sanitizedDate = xss(date);
       let sanitizedTime = xss(time);
@@ -110,7 +108,6 @@ router
 
       let validInputs = validations.checkMockInterview(sanitizedFirstName,
         sanitizedLastName,
-        sanitizedEmail,
         sanitizedInterviewType,
         sanitizedDate,
         sanitizedTime);
@@ -120,8 +117,8 @@ router
        
         return res.status(404).render('generic/error',{ message: "Invalid Inputs" });
       }
-
-      let user = await usersData.getUserByEmail(sanitizedEmail);  // This will throw an error if no user is found
+      
+      let user = await usersData.getUserByEmail(req.session.user.email); 
       
       if(!user)
       {
@@ -131,7 +128,7 @@ router
       let mockInterview = {
         firstName: sanitizedFirstName,
         LastName: sanitizedLastName,
-        email: sanitizedEmail,
+        email: req.session.user.email,
         interviewType: sanitizedInterviewType,
         date: sanitizedDate,
         time: sanitizedTime,
