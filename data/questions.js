@@ -6,6 +6,7 @@ import { companiesData } from '../data/index.js'
 import validations from '../validations.js'
 import util from './utilities.js'
 import xss from 'xss'
+import { v4 as uuidv4 } from 'uuid';
 
 const exportedMethods = {
   async createNewQuestion (
@@ -52,10 +53,11 @@ const exportedMethods = {
       let createdTime = util.getCurrentDateTime()
       let updatedTime = util.getCurrentDateTime()
 
-      userQuestionCompany = companiesData.showCompanyId(userQuestionCompany);
+      userQuestionCompany = await companiesData.showCompanyId(userQuestionCompany);
 
       const questionCollectionList = await questionCollection()
       let newQuestion = {
+        _id: uuidv4(),
         created_ts: createdTime,
         updated_at: updatedTime,
         question: userQuestion,
@@ -78,6 +80,7 @@ const exportedMethods = {
       if (!insertResult.insertedId) {
         throw new Error('Could not create the question')
       }
+      console.log(insertResult.insertedId)
       return { registrationCompleted: true }
     }
   },
